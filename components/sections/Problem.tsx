@@ -14,7 +14,7 @@ function highlightAnswer(text: string, highlights: string[]): ReactNode {
 
   return parts.map((part, index) =>
     highlights.includes(part) ? (
-      <strong key={`${part}-${index}`} className="text-[#222222]">
+      <strong key={`${part}-${index}`} className="font-semibold text-[#00d48a]">
         {part}
       </strong>
     ) : (
@@ -110,7 +110,7 @@ export function Problem() {
                   >
                     <span className="text-xl">{shop.icon}</span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-white">{shop.name}</p>
+                      <p className="text-sm font-semibold text-[#00d48a]">{shop.name}</p>
                       <p className="text-xs text-white/50">{shop.meta}</p>
                     </div>
                     {shop.badge ? (

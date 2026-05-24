@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/constants/site';
 import { defaultLanding } from '@/lib/content/default-landing';
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="ja" className="scroll-smooth">
       <body className="min-h-screen bg-white font-sans text-base text-[#222222] antialiased">
+        <GoogleAnalytics />
         <JsonLd />
         {children}
       </body>
