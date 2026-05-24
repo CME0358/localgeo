@@ -8,6 +8,7 @@ import { Industries } from '@/components/sections/Industries';
 import { LocalGeo } from '@/components/sections/LocalGeo';
 import { CaseStudy } from '@/components/sections/CaseStudy';
 import { Diagnosis } from '@/components/sections/Diagnosis';
+import { FAQ } from '@/components/sections/FAQ';
 import { Pricing } from '@/components/sections/Pricing';
 import { Future } from '@/components/sections/Future';
 
@@ -24,6 +25,7 @@ export default function HomePage() {
         <LocalGeo />
         <CaseStudy />
         <Diagnosis />
+        <FAQ />
         <Pricing />
         <Future />
       </main>
