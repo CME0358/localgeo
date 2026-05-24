@@ -1,16 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { AiSignalIconGlyph } from '@/components/ui/AiSignalIcon';
 import { GlassPanel } from '@/components/ui/GlassPanel';
+import type { AiSignalIcon } from '@/lib/comparison';
 import { cn } from '@/lib/utils';
 
 interface InfoCardProps {
   title: string;
   description: string;
+  icon: AiSignalIcon;
   index: number;
 }
 
-export function InfoCard({ title, description, index }: InfoCardProps) {
+export function InfoCard({ title, description, icon, index }: InfoCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -39,10 +42,21 @@ export function InfoCard({ title, description, index }: InfoCardProps) {
           }}
         />
         <div className="relative">
-          <span className="font-mono text-[11px] font-semibold tracking-wider text-[#3b72ff]/80">
-            {String(index + 1).padStart(2, '0')}
-          </span>
-          <h4 className="mt-3 text-base font-semibold text-white md:text-lg">{title}</h4>
+          <div className="flex items-start justify-between gap-3">
+            <div
+              className={cn(
+                'flex h-11 w-11 shrink-0 items-center justify-center rounded-full',
+                'bg-[#3b72ff]/15 text-[#6ea8ff] ring-1 ring-[#3b72ff]/20',
+                'transition-all duration-300 group-hover:bg-[#3b72ff]/22 group-hover:text-[#8bb8ff]',
+              )}
+            >
+              <AiSignalIconGlyph name={icon} className="h-5 w-5" />
+            </div>
+            <span className="font-mono text-[11px] font-semibold tracking-wider text-[#3b72ff]/80">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <h4 className="mt-4 text-base font-semibold text-white md:text-lg">{title}</h4>
           <p className="mt-2 text-sm leading-relaxed text-white/65 md:text-[0.9375rem]">
             {description}
           </p>

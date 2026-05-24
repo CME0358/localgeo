@@ -108,6 +108,7 @@ export function Comparison() {
                 key={signal.title}
                 title={signal.title}
                 description={signal.description}
+                icon={signal.icon}
                 index={index}
               />
             ))}
@@ -159,8 +160,7 @@ export function Comparison() {
           <Card variant="dark" className="relative flex h-full flex-col overflow-hidden p-6 md:p-8">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#3b72ff] to-[#00d48a]" />
             <p className="text-sm font-semibold text-[#00c2ff]">
-              ✦ {section.new.label.replace('Local GEO™', '')}
-              Local GEO
+              ✦ GEO Search Protocol
               <Tm />
             </p>
             <h3 className="mt-3 text-2xl font-bold text-white">{section.new.title}</h3>
