@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@import "@fontsource/noto-sans-jp/400.css";
+@import "@fontsource/noto-sans-jp/500.css";
+@import "@fontsource/noto-sans-jp/600.css";
+@import "@fontsource/noto-sans-jp/700.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #222222;
+  --color-primary: #ff385c;
+  --color-navy: #060d2e;
+  --color-accent-blue: #3b72ff;
+  --color-ai-green: #00d48a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-navy: var(--color-navy);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-ai-green: var(--color-ai-green);
+  --font-sans: "Noto Sans JP", var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --text-xs: 0.875rem;
+  --text-xs--line-height: calc(1.25 / 0.875);
+  --text-sm: 1rem;
+  --text-sm--line-height: calc(1.5 / 1);
+  --text-base: 1.125rem;
+  --text-base--line-height: calc(1.75 / 1.125);
+  --text-lg: 1.25rem;
+  --text-lg--line-height: calc(1.75 / 1.25);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
