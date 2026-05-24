@@ -126,9 +126,11 @@ export function Diagnosis() {
                 </p>
               )}
 
-              <Button type="submit" className="w-full">
-                {content.form.submitLabel}
-              </Button>
+              <div className="flex justify-center">
+                <Button type="submit" className="w-full sm:w-auto">
+                  {content.form.submitLabel}
+                </Button>
+              </div>
             </form>
             <p className="mt-3 text-center text-xs text-white/35">{content.form.footnote}</p>
           </GlassPanel>

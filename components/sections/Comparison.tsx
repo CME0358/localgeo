@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import { InfoCard } from '@/components/ui/InfoCard';
@@ -8,9 +8,9 @@ import { MotionItem, MotionStagger, SectionShell } from '@/components/ui/Section
 import { Tm } from '@/components/ui/Tm';
 import { AI_SIGNALS, COMPARISON_SECTION } from '@/lib/comparison';
 
-function FlowDiagram() {
-  const { flowSteps } = COMPARISON_SECTION;
+const FLOW_ALT = '検索 → AIが店舗を理解 → AIが推薦 → 来店';
 
+function FlowDiagram() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -19,25 +19,24 @@ function FlowDiagram() {
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="mx-auto w-full max-w-4xl"
     >
-      <div className="flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-2">
-        {flowSteps.map((step, index) => (
-          <Fragment key={step}>
-            <div className="w-full rounded-xl border border-[#3b72ff]/25 bg-gradient-to-br from-[#3b72ff]/10 to-white/5 px-4 py-3 text-center md:min-w-[9.5rem] md:w-auto md:px-5">
-              <p className="text-sm font-semibold text-[#222222] md:text-base">{step}</p>
-            </div>
-            {index < flowSteps.length - 1 ? (
-              <>
-                <span className="text-[#3b72ff]/70 md:hidden" aria-hidden>
-                  ↓
-                </span>
-                <span className="hidden text-lg text-[#3b72ff]/70 md:inline" aria-hidden>
-                  →
-                </span>
-              </>
-            ) : null}
-          </Fragment>
-        ))}
-      </div>
+      <Image
+        src="/S3_frow_v.png"
+        alt={FLOW_ALT}
+        width={1086}
+        height={1448}
+        className="mx-auto h-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:hidden"
+        sizes="(max-width: 1023px) 360px"
+        priority={false}
+      />
+      <Image
+        src="/S3_frow_h.png"
+        alt={FLOW_ALT}
+        width={2172}
+        height={724}
+        className="mx-auto hidden h-auto w-full max-w-4xl lg:block"
+        sizes="(min-width: 1024px) 896px"
+        priority={false}
+      />
     </motion.div>
   );
 }
