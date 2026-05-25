@@ -70,8 +70,7 @@ export async function triggerStepMailSequence(
   });
 
   const text = await res.text();
-  // 成功は 202 Accepted
-  if (res.status !== 202) {
+  if (!res.ok) {
     const error = parseStepMailError(res.status, text);
     console.error('[step-mail]', error, body.event, body.email);
     return { ok: false, error };
