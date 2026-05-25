@@ -131,6 +131,14 @@ export async function sendReport(
       throw new Error(json.error ?? json.detail ?? '送信に失敗しました');
     }
 
+    if (!json.emailSent) {
+      throw new Error(
+        json.emailSkipped
+          ? 'メール送信設定が未完了です。しばらくしてから再度お試しください。'
+          : 'メールの送付に失敗しました',
+      );
+    }
+
     return json;
   } finally {
     clearInterval(stepTimer);

@@ -70,6 +70,9 @@ async function sendReportEmail(
   const from = process.env.RESEND_FROM_EMAIL?.trim() || 'Local GEO <reports@coaretail.com>';
 
   if (!apiKey) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('RESEND_API_KEY が未設定です（Vercel Environment Variables を確認）');
+    }
     console.warn('[pdf] RESEND_API_KEY が未設定 — メール送信スキップ');
     return { skipped: true };
   }
