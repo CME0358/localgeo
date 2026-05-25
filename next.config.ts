@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  outputFileTracingIncludes: {
+    "/api/pdf": [
+      "./lib/pdf/templates/**/*",
+      "./node_modules/@fontsource/noto-sans-jp/files/**/*",
+    ],
+  },
 };
 
 export default nextConfig;

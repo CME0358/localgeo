@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { generateReportPdf } from '@/lib/pdf/generate-pdf';
+import { generateFullReportPdf } from '@/lib/pdf/merge-report-pdf';
 import {
   buildSlackReportMessage,
   clamp,
@@ -90,7 +90,7 @@ async function sendReportEmail(
         <div style="font-family:sans-serif;color:#0D1B3E;max-width:560px;margin:0 auto;">
           <p>${greeting}</p>
           <p><strong>${shopName}</strong> の AI Visibility Report をお送りします。</p>
-          <p>添付 PDF に、Local GEO Score・AI Visibility・改善ポイントをまとめています。</p>
+          <p>添付 PDF（全7ページ）に、AI診断結果・競合比較・改善ロードマップをまとめています。</p>
           <p style="color:#8899BB;font-size:13px;">GEO Search Protocol™ for Local</p>
         </div>
       `,
@@ -125,7 +125,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const scores = data.scores;
 
   try {
-    const pdfBuffer = await generateReportPdf(data);
+    const pdfBuffer = await generateFullReportPdf(data);
 
     const leadPayload: ReportLeadPayload = {
       email,
