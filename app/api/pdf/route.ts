@@ -6,6 +6,7 @@ import {
   notifyAirtable,
   notifySlack,
 } from '@/lib/pdf/lead-notify';
+import { triggerStepMailSequence } from '@/lib/pdf/trigger-step-mail';
 import type { DiagnosisResult, NotifyChannelResult, ReportLeadPayload } from '@/lib/types/diagnosis';
 
 export const maxDuration = 60;
@@ -177,10 +178,29 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const emailValue = emailResult.value;
 
+    let stepMailTriggered = false;
+    if (emailValue.ok) {
+      const stepMailResult = await triggerStepMailSequence({
+        email,
+        contactName,
+        shopName: data.shopName,
+        area: data.area,
+        industry: data.industry,
+        localGeoScore: scores.localGeoScore,
+        aiVisibilityScore: scores.aiVisibilityScore,
+      });
+      if (stepMailResult.ok) {
+        stepMailTriggered = true;
+      } else if (!stepMailResult.skipped) {
+        console.error('[pdf] step mail trigger failed', stepMailResult.error);
+      }
+    }
+
     return NextResponse.json({
       ok: true,
       emailSent: Boolean(emailValue.ok),
       emailSkipped: Boolean(emailValue.skipped),
+      stepMailTriggered,
       channels,
     });
   } catch (err) {

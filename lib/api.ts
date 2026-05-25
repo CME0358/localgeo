@@ -83,6 +83,7 @@ export interface SendReportResponse {
   ok: boolean;
   emailSent?: boolean;
   emailSkipped?: boolean;
+  stepMailTriggered?: boolean;
   channels?: NotifyChannelResult[];
   error?: string;
   detail?: string;
