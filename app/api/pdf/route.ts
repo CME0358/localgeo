@@ -179,6 +179,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const emailValue = emailResult.value;
 
     let stepMailTriggered = false;
+    let stepMailError: string | undefined;
     if (emailValue.ok) {
       const stepMailResult = await triggerStepMailSequence({
         email,
@@ -192,6 +193,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       if (stepMailResult.ok) {
         stepMailTriggered = true;
       } else if (!stepMailResult.skipped) {
+        stepMailError = stepMailResult.error;
         console.error('[pdf] step mail trigger failed', stepMailResult.error);
       }
     }
@@ -201,6 +203,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       emailSent: Boolean(emailValue.ok),
       emailSkipped: Boolean(emailValue.skipped),
       stepMailTriggered,
+      ...(stepMailError ? { stepMailError } : {}),
       channels,
     });
   } catch (err) {
