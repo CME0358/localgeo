@@ -6,6 +6,7 @@ import {
   notifyAirtable,
   notifySlack,
 } from '@/lib/pdf/lead-notify';
+import { buildReportEmailContent } from '@/lib/pdf/report-email';
 import { triggerStepMailSequence } from '@/lib/pdf/trigger-step-mail';
 import type { DiagnosisResult, NotifyChannelResult, ReportLeadPayload } from '@/lib/types/diagnosis';
 
@@ -64,7 +65,7 @@ interface EmailSendResult {
 async function sendReportEmail(
   email: string,
   contactName: string | null,
-  shopName: string,
+  data: DiagnosisResult,
   pdfBuffer: Buffer,
 ): Promise<EmailSendResult> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
@@ -78,7 +79,7 @@ async function sendReportEmail(
     return { skipped: true };
   }
 
-  const greeting = contactName ? `${contactName} 様` : 'ご担当者 様';
+  const { subject, html } = buildReportEmailContent(data, contactName);
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -89,15 +90,8 @@ async function sendReportEmail(
     body: JSON.stringify({
       from,
       to: [email],
-      subject: `AI Visibility Report — ${shopName}`,
-      html: `
-        <div style="font-family:sans-serif;color:#0D1B3E;max-width:560px;margin:0 auto;">
-          <p>${greeting}</p>
-          <p><strong>${shopName}</strong> の AI Visibility Report をお送りします。</p>
-          <p>添付 PDF（全7ページ）に、AI診断結果・競合比較・改善ロードマップをまとめています。</p>
-          <p style="color:#8899BB;font-size:13px;">GEO Search Protocol™ for Local</p>
-        </div>
-      `,
+      subject,
+      html,
       attachments: [
         {
           filename: 'AI-Visibility-Report.pdf',
@@ -150,7 +144,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     };
 
     const [emailResult, airtableResult, slackResult] = await Promise.allSettled([
-      sendReportEmail(email, contactName, data.shopName, pdfBuffer),
+      sendReportEmail(email, contactName, data, pdfBuffer),
       notifyAirtable(leadPayload),
       notifySlack(buildSlackReportMessage(leadPayload)),
     ]);
