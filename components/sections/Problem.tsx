@@ -48,6 +48,48 @@ export function Problem() {
         </>
       }
     >
+      {/* ── ニュース引用ブロック ── */}
+      <div className="mb-8 rounded-r-xl border border-l-4 border-black/8 border-l-[#ff385c] bg-white px-6 py-5">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="rounded bg-[#ff385c] px-2.5 py-0.5 text-[11px] font-black tracking-widest text-white">
+            NEWS
+          </span>
+          <span className="text-xs text-[#6a6a6a]">
+            ITmedia エンタープライズ　2026.05.27
+          </span>
+        </div>
+        <p className="mb-3 text-base font-bold leading-relaxed text-[#222222] md:text-lg">
+          「Google検索、25年ぶりの大刷新」<br />
+          AIモードの月間利用者数は
+          <strong className="text-[#ff385c]">10億人超</strong>。<br />
+          検索開始以来、最大級の変化と位置付ける。
+        </p>
+        <a
+          href="https://news.yahoo.co.jp/articles/efadf477a0488f1416749fa2c65fcfe9934ab5d1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 border-b border-black/15 pb-px text-xs text-[#6a6a6a] hover:text-[#ff385c] transition-colors"
+        >
+          記事を読む ↗
+        </a>
+      </div>
+
+      {/* ── 解説コピー ── */}
+      <div className="mb-8 overflow-hidden rounded-2xl bg-[#060d2e] px-6 py-8 text-left md:px-8 md:py-9">
+        <p className="text-base font-medium leading-[2.1] text-[#f0f4ff] md:text-lg">
+          2026年5月19日、Googleが発表した。
+          <br />
+          <br />
+          キーワードを打ち込む検索から、
+          <br />
+          AIエージェントが答えを出す検索へ。
+          <br />
+          <br />
+          これは予告ではない。
+          <span className="font-extrabold text-[#ff385c]">今、起きていることだ。</span>
+        </p>
+      </div>
+
       <Card variant="light" className="overflow-hidden p-0">
         <div className="flex items-center gap-3 border-b border-black/5 bg-[#f2f2f2] px-4 py-3">
           <div className="flex gap-1.5">
