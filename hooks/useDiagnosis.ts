@@ -2,6 +2,11 @@
 
 import { useCallback, useReducer } from 'react';
 import { LOADING_STEPS, REPORT_LOADING_STEPS } from '@/lib/constants/diagnosis';
+import {
+  trackDiagnosisComplete,
+  trackDiagnosisStart,
+  trackFormSubmit,
+} from '@/lib/analytics/gtag-events';
 import { fetchDiagnosis, notifyLead, sendReport } from '@/lib/api';
 import type { DiagnosisInput, DiagnosisResult, DiagnosisState } from '@/lib/types/diagnosis';
 
@@ -97,6 +102,7 @@ export function useDiagnosis() {
     }
 
     dispatch({ type: 'SUBMIT_START' });
+    trackDiagnosisStart({ industry: input.industry, area: input.area });
     void notifyLead(input);
 
     try {
@@ -104,6 +110,7 @@ export function useDiagnosis() {
         useMock: USE_MOCK,
         onStep: (index, label) => dispatch({ type: 'LOADING_STEP', index, label }),
       });
+      trackDiagnosisComplete({ industry: result.industry, area: result.area });
       dispatch({ type: 'SUBMIT_SUCCESS', result });
     } catch (e) {
       dispatch({
@@ -137,6 +144,10 @@ export function useDiagnosis() {
           },
           (index, label) => dispatch({ type: 'REPORT_STEP', index, label }),
         );
+        trackFormSubmit({
+          industry: state.result.industry,
+          area: state.result.area,
+        });
         dispatch({ type: 'REPORT_SUCCESS', email });
       } catch (e) {
         dispatch({
