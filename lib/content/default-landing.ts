@@ -352,7 +352,7 @@ export const defaultLanding: LandingPageContent = {
   },
   pricing: {
     eyebrow: '料金プラン',
-    titleLines: ['シンプルな', '月額プラン一択。'],
+    titleLines: ['シンプルな', '月払い・年払い。'],
     subtitleLines: [
       '契約・運用・レポートまで全て込み。',
       '余計なオプションや隠れコストは一切ありません。',
@@ -360,8 +360,20 @@ export const defaultLanding: LandingPageContent = {
     badge: '✦ GEO Search Protocol™ for Local',
     serviceName: 'Full Protocol Plan',
     currency: '¥',
-    amount: '50,000',
-    per: '/ 月額（税別） · 12ヶ月契約',
+    paymentOptions: {
+      monthly: {
+        label: '月払い',
+        amount: '60,000',
+        per: '/ 月額（税別） · 12ヶ月契約',
+      },
+      annual: {
+        label: '年払い',
+        amount: '600,000',
+        per: '/ 年額（税別） · 一括請求',
+        discountLabel: '約17%OFF',
+        discountNote: '月払い12ヶ月分（¥720,000）比 · 2ヶ月分お得',
+      },
+    },
     features: [
       'Local GEO™戦略設計',
       'GoogleMap最適化',

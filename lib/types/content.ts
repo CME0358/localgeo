@@ -208,8 +208,20 @@ export interface LandingPageContent {
     badge: string;
     serviceName: string;
     currency: string;
-    amount: string;
-    per: string;
+    paymentOptions: {
+      monthly: {
+        label: string;
+        amount: string;
+        per: string;
+      };
+      annual: {
+        label: string;
+        amount: string;
+        per: string;
+        discountLabel: string;
+        discountNote: string;
+      };
+    };
     features: string[];
     cta: { label: string; href: string };
     noteLines: string[];
