@@ -7,6 +7,19 @@ import {
 } from '@/lib/pdf/lead-notify';
 import type { NotifyChannelResult } from '@/lib/types/diagnosis';
 
+function pickHeader(request: Request, key: string): string | null {
+  return request.headers.get(key) || request.headers.get(key.toLowerCase()) || null;
+}
+
+function logRequest(tag: string, request: Request, data: Record<string, unknown>) {
+  console.log(tag, {
+    vercelId: pickHeader(request, 'x-vercel-id'),
+    forwardedFor: pickHeader(request, 'x-forwarded-for'),
+    userAgent: pickHeader(request, 'user-agent'),
+    ...data,
+  });
+}
+
 export async function POST(request: Request): Promise<NextResponse> {
   let body: Record<string, unknown>;
   try {
@@ -17,10 +30,18 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const parsed = buildLeadPayload(body);
   if (!parsed.ok) {
+    logRequest('[send] invalid', request, { error: parsed.error });
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
   const { payload } = parsed;
+  logRequest('[send] start', request, {
+    sessionId: payload.sessionId ?? null,
+    shopName: payload.shopName,
+    area: payload.area,
+    industry: payload.industry,
+    timestamp: payload.timestamp,
+  });
   const results = await Promise.allSettled([
     notifyAirtable(payload),
     notifySlack(buildSlackDiagnosisLeadMessage(payload)),

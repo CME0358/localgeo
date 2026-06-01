@@ -51,12 +51,13 @@ export function buildSlackDiagnosisLeadMessage(payload: LeadPayload): string {
     timeZone: 'Asia/Tokyo',
   });
   const lines = [
-    '🔍 *Local GEO — 無料AI推薦スコア診断*',
+    '🔍 *Local GEO — 診断開始（メール未取得）*',
     `・店舗名：${payload.shopName}`,
     `・地域：${payload.area}`,
     `・業種：${payload.industry}`,
     `・日時：${jst}`,
   ];
+  if (payload.sessionId) lines.push(`・sessionId：\`${payload.sessionId}\``);
   if (payload.pageUrl) lines.push(`・ページ：${payload.pageUrl}`);
   return lines.join('\n');
 }
@@ -66,7 +67,7 @@ export function buildSlackReportMessage(payload: ReportLeadPayload): string {
     timeZone: 'Asia/Tokyo',
   });
   const lines = [
-    '📊 *Local GEO — AI Visibility Report 取得*',
+    '📊 *Local GEO — レポート送付リクエスト（メール取得済）*',
     `・メール：${payload.email}`,
     `・店舗名：${payload.shopName}`,
     `・地域：${payload.area}`,
@@ -76,6 +77,7 @@ export function buildSlackReportMessage(payload: ReportLeadPayload): string {
     `・日時：${jst}`,
   ];
   if (payload.contactName) lines.splice(2, 0, `・担当者：${payload.contactName}`);
+  if (payload.sessionId) lines.push(`・sessionId：\`${payload.sessionId}\``);
   return lines.join('\n');
 }
 
@@ -99,6 +101,7 @@ export function buildLeadPayload(body: Record<string, unknown>): ParsedLeadPaylo
   }
 
   const timestamp = body.timestamp ? clamp(body.timestamp, 64) : new Date().toISOString();
+  const sessionId = body.sessionId ? clamp(body.sessionId, 96) : undefined;
 
   return {
     ok: true,
@@ -107,6 +110,7 @@ export function buildLeadPayload(body: Record<string, unknown>): ParsedLeadPaylo
       area,
       industry,
       timestamp,
+      sessionId,
       source: 'local-geo-lp',
       formName: '無料AI推薦スコア診断',
       pageUrl: clamp(body.pageUrl ?? '', 500) || null,

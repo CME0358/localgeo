@@ -66,6 +66,8 @@ export interface LeadPayload {
   area: string;
   industry: string;
   timestamp: string;
+  /** 診断→レポートまでの相関ID（フロント生成） */
+  sessionId?: string;
   source: string;
   formName: string;
   pageUrl: string | null;
@@ -90,6 +92,7 @@ export interface ReportRequest {
   industry: string;
   diagnosis: DiagnosisResult;
   pageUrl?: string;
+  sessionId?: string;
 }
 
 export interface NotifyChannelResult {

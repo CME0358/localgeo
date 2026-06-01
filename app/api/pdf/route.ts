@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { createHash } from 'crypto';
 import { generateFullReportPdf } from '@/lib/pdf/merge-report-pdf';
 import {
   buildSlackReportMessage,
@@ -14,11 +15,30 @@ export const maxDuration = 60;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function hashEmail(email: string): string {
+  // PIIをログに残さない。検索用に短縮ハッシュのみ。
+  return createHash('sha256').update(email.trim().toLowerCase()).digest('hex').slice(0, 16);
+}
+
+function pickHeader(request: Request, key: string): string | null {
+  return request.headers.get(key) || request.headers.get(key.toLowerCase()) || null;
+}
+
+function logRequest(tag: string, request: Request, data: Record<string, unknown>) {
+  console.log(tag, {
+    vercelId: pickHeader(request, 'x-vercel-id'),
+    forwardedFor: pickHeader(request, 'x-forwarded-for'),
+    userAgent: pickHeader(request, 'user-agent'),
+    ...data,
+  });
+}
+
 interface ValidatedReportRequest {
   ok: true;
   email: string;
   contactName: string | null;
   data: DiagnosisResult;
+  sessionId: string | null;
 }
 
 interface ValidationError {
@@ -41,6 +61,7 @@ function validateRequest(body: Record<string, unknown>): ValidatedReportRequest 
   const area = clamp(body.area || diagnosis.area);
   const industry = clamp(body.industry || diagnosis.industry);
   const contactName = clamp(body.contactName ?? '', 100) || null;
+  const sessionId = clamp(body.sessionId ?? '', 96) || null;
 
   if (!shopName || !area || !industry) {
     return { ok: false, error: '店舗情報が不足しています' };
@@ -54,7 +75,7 @@ function validateRequest(body: Record<string, unknown>): ValidatedReportRequest 
     analyzedAt: diagnosis.analyzedAt || new Date().toISOString(),
   };
 
-  return { ok: true, email, contactName, data };
+  return { ok: true, email, contactName, data, sessionId };
 }
 
 interface EmailSendResult {
@@ -116,11 +137,20 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const parsed = validateRequest(body);
   if (!parsed.ok) {
+    logRequest('[pdf] invalid', request, { error: parsed.error });
     return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
-  const { email, contactName, data } = parsed;
+  const { email, contactName, data, sessionId } = parsed;
   const scores = data.scores;
+  logRequest('[pdf] start', request, {
+    sessionId,
+    emailHash: hashEmail(email),
+    shopName: data.shopName,
+    area: data.area,
+    industry: data.industry,
+    analyzedAt: data.analyzedAt,
+  });
 
   try {
     const pdfBuffer = await generateFullReportPdf(data);
@@ -138,6 +168,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       aiRecommendationPotential: scores.aiRecommendationPotential,
       analyzedAt: data.analyzedAt,
       timestamp: new Date().toISOString(),
+      sessionId: sessionId ?? undefined,
       source: 'local-geo-lp',
       formName: 'AI Visibility Report',
       pageUrl: clamp(body.pageUrl ?? '', 500) || null,
@@ -150,7 +181,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     ]);
 
     if (emailResult.status === 'rejected') {
-      console.error('[pdf] email failed', emailResult.reason);
+      logRequest('[pdf] email_failed', request, {
+        sessionId,
+        emailHash: hashEmail(email),
+        message:
+          emailResult.reason instanceof Error ? emailResult.reason.message : String(emailResult.reason),
+      });
       return NextResponse.json(
         {
           ok: false,
@@ -171,6 +207,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     });
 
     const emailValue = emailResult.value;
+    logRequest('[pdf] email_result', request, {
+      sessionId,
+      emailHash: hashEmail(email),
+      ok: Boolean(emailValue.ok),
+      skipped: Boolean(emailValue.skipped),
+    });
 
     let stepMailTriggered = false;
     let stepMailError: string | undefined;
@@ -201,7 +243,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       channels,
     });
   } catch (err) {
-    console.error('[pdf]', err);
+    logRequest('[pdf] error', request, {
+      sessionId,
+      emailHash: hashEmail(email),
+      message: err instanceof Error ? err.message : String(err),
+    });
     return NextResponse.json(
       {
         ok: false,

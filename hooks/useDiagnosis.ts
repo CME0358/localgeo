@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useRef } from 'react';
 import { LOADING_STEPS, REPORT_LOADING_STEPS } from '@/lib/constants/diagnosis';
 import {
   trackDiagnosisComplete,
@@ -93,6 +93,9 @@ function validateInput(input: DiagnosisInput): string | null {
 
 export function useDiagnosis() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const sessionIdRef = useRef<string>(
+    typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : String(Date.now()),
+  );
 
   const runDiagnosis = useCallback(async (input: DiagnosisInput) => {
     const err = validateInput(input);
@@ -103,12 +106,13 @@ export function useDiagnosis() {
 
     dispatch({ type: 'SUBMIT_START' });
     trackDiagnosisStart({ industry: input.industry, area: input.area });
-    void notifyLead(input);
+    void notifyLead({ ...input, sessionId: sessionIdRef.current });
 
     try {
       const result = await fetchDiagnosis(input, {
         useMock: USE_MOCK,
         onStep: (index, label) => dispatch({ type: 'LOADING_STEP', index, label }),
+        sessionId: sessionIdRef.current,
       });
       trackDiagnosisComplete({ industry: result.industry, area: result.area });
       dispatch({ type: 'SUBMIT_SUCCESS', result });
@@ -141,6 +145,7 @@ export function useDiagnosis() {
             area: state.result.area,
             industry: state.result.industry,
             diagnosis: state.result,
+            sessionId: sessionIdRef.current,
           },
           (index, label) => dispatch({ type: 'REPORT_STEP', index, label }),
         );
@@ -163,5 +168,5 @@ export function useDiagnosis() {
     dispatch({ type: 'RESET_REPORT' });
   }, []);
 
-  return { state, runDiagnosis, submitReport, retryReport };
+  return { state, runDiagnosis, submitReport, retryReport, sessionId: sessionIdRef.current };
 }

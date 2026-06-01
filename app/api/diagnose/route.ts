@@ -6,6 +6,20 @@ import type {
   DiagnosisResult,
 } from '@/lib/types/diagnosis';
 
+function pickHeader(request: Request, key: string): string | null {
+  return request.headers.get(key) || request.headers.get(key.toLowerCase()) || null;
+}
+
+function logRequest(tag: string, request: Request, data: Record<string, unknown>) {
+  // Vercel Runtime Logs で検索しやすいように JSON で統一
+  console.log(tag, {
+    vercelId: pickHeader(request, 'x-vercel-id'),
+    forwardedFor: pickHeader(request, 'x-forwarded-for'),
+    userAgent: pickHeader(request, 'user-agent'),
+    ...data,
+  });
+}
+
 function insightFromScore(v: number): DiagnosisInsight {
   if (v >= 70) return { status: 'good', label: '良好' };
   if (v >= 40) return { status: 'warn', label: '改善余地あり' };
@@ -262,8 +276,10 @@ export async function POST(request: Request): Promise<NextResponse> {
   const shopName = String(body.shopName ?? '').trim();
   const area = String(body.area ?? '').trim();
   const industry = String(body.industry ?? '').trim();
+  const sessionId = String(body.sessionId ?? '').trim() || null;
 
   if (!shopName || !area || !industry) {
+    logRequest('[diagnose] invalid', request, { sessionId, shopName, area, industry });
     return NextResponse.json({ error: 'shopName, area, industry は必須です' }, { status: 400 });
   }
 
@@ -273,15 +289,25 @@ export async function POST(request: Request): Promise<NextResponse> {
   const openaiModel = process.env.OPENAI_MODEL?.trim() || 'gpt-4o-mini';
 
   if (!placesKey || !openaiKey) {
+    logRequest('[diagnose] mock', request, { sessionId, shopName, area, industry });
     return NextResponse.json(buildMockResult(input));
   }
 
   try {
+    logRequest('[diagnose] start', request, { sessionId, shopName, area, industry, openaiModel });
     const places = await fetchPlacesData(input, placesKey);
     const analysis = await analyzeWithOpenAI(input, places, openaiKey, openaiModel);
+    logRequest('[diagnose] ok', request, {
+      sessionId,
+      placeFound: Boolean(places),
+      placeId: places?.placeId ?? null,
+    });
     return NextResponse.json(mergeDiagnosisResult(input, analysis, places));
   } catch (err) {
-    console.error('[diagnose]', err);
+    logRequest('[diagnose] error', request, {
+      sessionId,
+      message: err instanceof Error ? err.message : String(err),
+    });
     return NextResponse.json(
       {
         error: '診断処理に失敗しました',

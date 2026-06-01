@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { defaultLandingContent } from '@/lib/content/default-landing';
 import { INDUSTRIES } from '@/lib/constants/diagnosis';
@@ -29,6 +29,22 @@ export function Diagnosis() {
   const [email, setEmail] = useState('');
   const [contactName, setContactName] = useState('');
   const [reportShop, setReportShop] = useState('');
+  const reportRef = useRef<HTMLDivElement | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
+
+  const showStickyReportCta = useMemo(() => {
+    return state.status === 'results' && Boolean(state.result);
+  }, [state.status, state.result]);
+
+  useEffect(() => {
+    if (state.status !== 'results') return;
+    // 結果が表示されたら「レポート受け取り」まで誘導（モバイルで見落としやすい）
+    const t = window.setTimeout(() => {
+      reportRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(() => emailInputRef.current?.focus(), 350);
+    }, 250);
+    return () => window.clearTimeout(t);
+  }, [state.status]);
 
   const onSubmitDiagnosis = (e: FormEvent) => {
     e.preventDefault();
@@ -82,6 +98,7 @@ export function Diagnosis() {
                   id="diag-shop"
                   value={shopName}
                   onChange={(e) => setShopName(e.target.value)}
+                  disabled={state.status === 'loading' || state.status === 'report-loading'}
                   className="mt-1 w-full rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-[#3b72ff]/80 focus:ring-2 focus:ring-[#3b72ff]/25"
                   placeholder="例：さくら整体院 渋谷店"
                   required
@@ -95,6 +112,7 @@ export function Diagnosis() {
                   id="diag-area"
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
+                  disabled={state.status === 'loading' || state.status === 'report-loading'}
                   className="mt-1 w-full rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-[#3b72ff]/80 focus:ring-2 focus:ring-[#3b72ff]/25"
                   placeholder="例：渋谷区、恵比寿など"
                   required
@@ -108,6 +126,7 @@ export function Diagnosis() {
                   id="diag-industry"
                   value={industry}
                   onChange={(e) => setIndustry(e.target.value)}
+                  disabled={state.status === 'loading' || state.status === 'report-loading'}
                   className="mt-1 w-full rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-[#3b72ff]/80"
                   required
                 >
@@ -127,8 +146,12 @@ export function Diagnosis() {
               )}
 
               <div className="flex justify-center">
-                <Button type="submit" className="w-full sm:w-auto">
-                  {content.form.submitLabel}
+                <Button
+                  type="submit"
+                  className="w-full sm:w-auto"
+                  disabled={state.status === 'loading' || state.status === 'report-loading'}
+                >
+                  {state.status === 'loading' ? '診断中…' : content.form.submitLabel}
                 </Button>
               </div>
             </form>
@@ -215,7 +238,10 @@ export function Diagnosis() {
                   ))}
                 </div>
 
-                <div className="mt-8 rounded-xl border border-[#3b72ff]/30 bg-gradient-to-br from-[#1b56b0]/20 to-[#060d2e]/60 p-5 backdrop-blur-md">
+                <div
+                  ref={reportRef}
+                  className="mt-8 scroll-mt-24 rounded-xl border border-[#3b72ff]/30 bg-gradient-to-br from-[#1b56b0]/20 to-[#060d2e]/60 p-5 backdrop-blur-md"
+                >
                   <p className="text-xs font-bold uppercase tracking-wider text-[#00d48a]">Detailed Report Ready</p>
                   <h5 className="mt-2 text-lg font-bold text-white">{content.dashboard.reportTitle}</h5>
                   <p className="mt-2 text-sm text-white/60">{content.dashboard.reportDesc}</p>
@@ -235,6 +261,8 @@ export function Diagnosis() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
                       required
+                      ref={emailInputRef}
+                      disabled={state.status === 'report-loading'}
                       className="w-full rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-[#3b72ff]/80"
                     />
                     <div className="grid grid-cols-2 gap-3">
@@ -243,6 +271,7 @@ export function Diagnosis() {
                         value={reportShop || shopName}
                         onChange={(e) => setReportShop(e.target.value)}
                         placeholder="店舗名（任意）"
+                        disabled={state.status === 'report-loading'}
                         className="rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none"
                       />
                       <input
@@ -250,14 +279,19 @@ export function Diagnosis() {
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         placeholder="担当者名（任意）"
+                        disabled={state.status === 'report-loading'}
                         className="rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none"
                       />
                     </div>
                     {state.reportError && (
                       <p className="text-sm text-[#ff8b88]">{state.reportError}</p>
                     )}
-                    <Button type="submit" className="w-full bg-gradient-to-r from-[#1B56B0] to-[#0D1B3E]">
-                      {content.dashboard.reportSubmitLabel}
+                    <Button
+                      type="submit"
+                      disabled={state.status === 'report-loading'}
+                      className="w-full bg-gradient-to-r from-[#1B56B0] to-[#0D1B3E]"
+                    >
+                      {state.status === 'report-loading' ? '送信中…' : content.dashboard.reportSubmitLabel}
                     </Button>
                   </form>
                 </div>
@@ -299,6 +333,27 @@ export function Diagnosis() {
             )}
           </GlassPanel>
       </div>
+
+      {showStickyReportCta && (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#060d2e]/85 backdrop-blur-md">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-semibold text-white/80">詳細レポートをメールで受け取る</p>
+              <p className="truncate text-[11px] text-white/55">入力は30秒。PDFを即送付。</p>
+            </div>
+            <Button
+              type="button"
+              className="shrink-0"
+              onClick={() => {
+                reportRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                window.setTimeout(() => emailInputRef.current?.focus(), 250);
+              }}
+            >
+              今すぐ受け取る
+            </Button>
+          </div>
+        </div>
+      )}
     </SectionShell>
   );
 }

@@ -18,13 +18,14 @@ export type DiagnosisStepCallback = (stepIndex: number, stepLabel: string) => vo
 export interface FetchDiagnosisOptions {
   useMock?: boolean;
   onStep?: DiagnosisStepCallback;
+  sessionId?: string;
 }
 
 export async function fetchDiagnosis(
   input: DiagnosisInput,
   options: FetchDiagnosisOptions = {},
 ): Promise<DiagnosisResult> {
-  const { useMock = false, onStep } = options;
+  const { useMock = false, onStep, sessionId } = options;
   const stepCallback: DiagnosisStepCallback = onStep ?? (() => {});
 
   if (useMock) {
@@ -42,7 +43,7 @@ export async function fetchDiagnosis(
   const res = await fetch('/api/diagnose', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(input),
+    body: JSON.stringify({ ...input, sessionId }),
   });
 
   if (!res.ok) {
@@ -59,6 +60,7 @@ export interface NotifyLeadPayload {
   industry: string;
   timestamp?: string;
   pageUrl?: string;
+  sessionId?: string;
 }
 
 export async function notifyLead(payload: NotifyLeadPayload): Promise<void> {
@@ -72,6 +74,7 @@ export async function notifyLead(payload: NotifyLeadPayload): Promise<void> {
         industry: payload.industry,
         timestamp: payload.timestamp ?? new Date().toISOString(),
         pageUrl: payload.pageUrl ?? (typeof window !== 'undefined' ? window.location.href : undefined),
+        sessionId: payload.sessionId,
       }),
     });
   } catch (err) {
@@ -95,6 +98,7 @@ export async function sendReport(
     industry: string;
     diagnosis: DiagnosisResult;
     pageUrl?: string;
+    sessionId?: string;
   },
   onReportStep?: DiagnosisStepCallback,
 ): Promise<SendReportResponse> {
@@ -123,6 +127,7 @@ export async function sendReport(
         pageUrl:
           formData.pageUrl ??
           (typeof window !== 'undefined' ? window.location.href : undefined),
+        sessionId: formData.sessionId,
       }),
     });
 
