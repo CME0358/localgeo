@@ -262,7 +262,6 @@ export function Diagnosis() {
                       placeholder="name@example.com"
                       required
                       ref={emailInputRef}
-                      disabled={state.status === 'report-loading'}
                       className="w-full rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none focus:border-[#3b72ff]/80"
                     />
                     <div className="grid grid-cols-2 gap-3">
@@ -271,7 +270,6 @@ export function Diagnosis() {
                         value={reportShop || shopName}
                         onChange={(e) => setReportShop(e.target.value)}
                         placeholder="店舗名（任意）"
-                        disabled={state.status === 'report-loading'}
                         className="rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none"
                       />
                       <input
@@ -279,7 +277,6 @@ export function Diagnosis() {
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         placeholder="担当者名（任意）"
-                        disabled={state.status === 'report-loading'}
                         className="rounded-lg border border-white/10 bg-black/25 px-3 py-3 text-white outline-none"
                       />
                     </div>
@@ -288,10 +285,9 @@ export function Diagnosis() {
                     )}
                     <Button
                       type="submit"
-                      disabled={state.status === 'report-loading'}
                       className="w-full bg-gradient-to-r from-[#1B56B0] to-[#0D1B3E]"
                     >
-                      {state.status === 'report-loading' ? '送信中…' : content.dashboard.reportSubmitLabel}
+                      {content.dashboard.reportSubmitLabel}
                     </Button>
                   </form>
                 </div>

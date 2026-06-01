@@ -1,3 +1,7 @@
+import {
+  buildSlackStage1Diagnosis,
+  buildSlackStage2Report,
+} from '@/lib/slack-messages';
 import type { LeadPayload, NotifyChannelResult, ReportLeadPayload } from '@/lib/types/diagnosis';
 
 const MAX_FIELD = 300;
@@ -47,38 +51,30 @@ export async function notifySlack(text: string): Promise<NotifyChannelResult> {
 }
 
 export function buildSlackDiagnosisLeadMessage(payload: LeadPayload): string {
-  const jst = new Date(payload.timestamp).toLocaleString('ja-JP', {
-    timeZone: 'Asia/Tokyo',
+  return buildSlackStage1Diagnosis({
+    service: 'localgeo',
+    shopName: payload.shopName,
+    area: payload.area,
+    industry: payload.industry,
+    timestamp: payload.timestamp,
+    sessionId: payload.sessionId,
+    pageUrl: payload.pageUrl,
   });
-  const lines = [
-    '🔍 *Local GEO — 診断開始（メール未取得）*',
-    `・店舗名：${payload.shopName}`,
-    `・地域：${payload.area}`,
-    `・業種：${payload.industry}`,
-    `・日時：${jst}`,
-  ];
-  if (payload.sessionId) lines.push(`・sessionId：\`${payload.sessionId}\``);
-  if (payload.pageUrl) lines.push(`・ページ：${payload.pageUrl}`);
-  return lines.join('\n');
 }
 
 export function buildSlackReportMessage(payload: ReportLeadPayload): string {
-  const jst = new Date(payload.timestamp || payload.analyzedAt).toLocaleString('ja-JP', {
-    timeZone: 'Asia/Tokyo',
+  return buildSlackStage2Report({
+    service: 'localgeo',
+    email: payload.email,
+    shopName: payload.shopName,
+    area: payload.area,
+    industry: payload.industry,
+    localGeoScore: payload.localGeoScore,
+    aiVisibilityScore: payload.aiVisibilityScore,
+    contactName: payload.contactName,
+    timestamp: payload.timestamp || payload.analyzedAt,
+    sessionId: payload.sessionId,
   });
-  const lines = [
-    '📊 *Local GEO — レポート送付リクエスト（メール取得済）*',
-    `・メール：${payload.email}`,
-    `・店舗名：${payload.shopName}`,
-    `・地域：${payload.area}`,
-    `・業種：${payload.industry}`,
-    `・Local GEO Score：${payload.localGeoScore}`,
-    `・AI Visibility Score：${payload.aiVisibilityScore}`,
-    `・日時：${jst}`,
-  ];
-  if (payload.contactName) lines.splice(2, 0, `・担当者：${payload.contactName}`);
-  if (payload.sessionId) lines.push(`・sessionId：\`${payload.sessionId}\``);
-  return lines.join('\n');
 }
 
 export interface ParsedLeadPayload {

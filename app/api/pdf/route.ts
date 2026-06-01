@@ -88,6 +88,7 @@ async function sendReportEmail(
   contactName: string | null,
   data: DiagnosisResult,
   pdfBuffer: Buffer,
+  sessionId: string | null,
 ): Promise<EmailSendResult> {
   const apiKey = process.env.RESEND_API_KEY?.trim();
   const from = process.env.RESEND_FROM_EMAIL?.trim() || 'Local GEO <reports@coaretail.com>';
@@ -113,6 +114,10 @@ async function sendReportEmail(
       to: [email],
       subject,
       html,
+      tags: [
+        { name: 'service', value: 'localgeo' },
+        ...(sessionId ? [{ name: 'sessionId', value: sessionId }] : []),
+      ],
       attachments: [
         {
           filename: 'AI-Visibility-Report.pdf',
@@ -175,7 +180,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     };
 
     const [emailResult, airtableResult, slackResult] = await Promise.allSettled([
-      sendReportEmail(email, contactName, data, pdfBuffer),
+      sendReportEmail(email, contactName, data, pdfBuffer, sessionId),
       notifyAirtable(leadPayload),
       notifySlack(buildSlackReportMessage(leadPayload)),
     ]);
