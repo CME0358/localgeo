@@ -12,7 +12,7 @@ const DIAGNOSIS_APP_ID = `${SITE_URL}/#diagnosis-app`;
 const INDUSTRIES_ID = `${SITE_URL}/#industries`;
 
 const PAGE_DESCRIPTION =
-  'ChatGPT・Gemini・AI Overviewに推薦される店舗へ。Local GEO™診断とGEO Search Protocol™ for Local。';
+  'MEO対策だけでは不十分な時代に。ChatGPT・Gemini・AI OverviewでAI推薦されやすい店舗を設計。エステ・整体・美容室対応。Googleマップ最適化も込み。月額60,000円〜。';
 
 /** 本社サイトのロゴ（public/logo.png は未配置のため本社URLを使用） */
 const ORGANIZATION_LOGO = 'https://www.coaretail.com/logo.png';
@@ -131,7 +131,7 @@ export function buildEvaluationFrameworkSchema() {
     '@id': FRAMEWORK_ID,
     name: 'Local GEO Evaluation Framework',
     description:
-      '地域店舗のAI検索露出を測る評価フレームワーク。Local GEO Score・AI Visibility Score・FAQ/GoogleMap最適化・AI推薦可能性を軸に診断する。',
+      '地域店舗のAI検索露出を測る評価フレームワーク。Local GEO Score・AI Visibility Score・FAQ/Googleマップ最適化・AI推薦可能性を軸に診断する。',
     hasDefinedTerm: [
       {
         '@type': 'DefinedTerm',
@@ -167,7 +167,7 @@ export function buildEvaluationFrameworkSchema() {
         '@type': 'DefinedTerm',
         name: 'Local GEO',
         description:
-          'MEO（GoogleMap順位対策）を超え、AIが店舗を理解・引用・推薦しやすい状態を設計するAI検索最適化。GEO Search Protocol™ for Localの中核コンセプト。',
+          'MEO（Googleマップ順位対策）を超え、AIが店舗を理解・引用・推薦しやすい状態を設計するGEO対策（AI検索最適化）。GEO Search Protocol™ for Localの中核コンセプト。',
       },
     ],
   };
@@ -236,11 +236,12 @@ export function buildServiceSchema() {
     '@type': 'Service',
     '@id': SERVICE_ID,
     name: pricing.serviceName,
-    alternateName: ['Local GEO', 'GEO Search Protocol for Local', meta.title],
+    alternateName: ['Local GEO', 'GEO Search Protocol for Local', 'GEO対策', 'AI検索対策', meta.title],
     serviceType: 'AI Local Search Optimization',
     url: SITE_URL,
     provider: { '@id': ORGANIZATION_ID },
-    description: 'AI検索時代における地域店舗向けAI推薦最適化サービス',
+    description:
+      'MEO対策とGEO対策を統合した、AI検索時代の地域店舗向けAI推薦最適化サービス',
     areaServed: {
       '@type': 'Country',
       name: 'Japan',

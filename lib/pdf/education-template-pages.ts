@@ -117,7 +117,7 @@ async function buildEducationDoc(data: DiagnosisResult): Promise<PDFDocument> {
     `地域関連性不足 — 「${data.area} × ${data.industry}」文脈での情報が薄い`,
   ], MARGIN, y, CONTENT_W);
   y -= 12;
-  drawJpText(e2, 'MEO（GoogleMap順位）だけでは不十分な理由', MARGIN, y, 13, fonts.jp, ACCENT);
+  drawJpText(e2, 'MEO（Googleマップ順位）だけでは不十分な理由', MARGIN, y, 13, fonts.jp, ACCENT);
   y -= 22;
   drawJpLines(
     e2,
@@ -173,7 +173,7 @@ async function buildEducationDoc(data: DiagnosisResult): Promise<PDFDocument> {
   drawHeader(e4, fonts);
   y = drawSectionTitle(e4, fonts, '改善ロードマップ（優先順）', CONTENT_TOP);
   y = drawBulletList(e4, fonts, [
-    'GBP・GoogleMap情報の完成度向上',
+    'GBP・Googleマップ情報の完成度向上',
     'FAQ構造化（地域名＋業種キーワード）',
     'LocalBusiness / FAQPage スキーマ markup',
     'AI引用向けコンテンツ（比較・選び方・地域特化）',

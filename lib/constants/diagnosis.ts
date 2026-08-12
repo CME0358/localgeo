@@ -1,7 +1,7 @@
 export const LOADING_STEPS = [
   'ChatGPT解析中…',
   'Gemini分析中…',
-  'GoogleMap分析中…',
+  'Googleマップ分析中…',
   'AI Visibility Score生成中…',
 ] as const;
 

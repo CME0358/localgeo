@@ -20,7 +20,7 @@ function buildEmailIssues(data: DiagnosisResult): EmailIssue[] {
   const analysis = buildReportAnalysis(data);
   const blocks = [
     { title: 'FAQ最適化', ...analysis.page2.faq },
-    { title: 'GoogleMap最適化', ...analysis.page2.googleMap },
+    { title: 'Googleマップ最適化', ...analysis.page2.googleMap },
     { title: 'AI引用', ...analysis.page2.aiCitation },
     { title: '口コミ分析', ...analysis.page2.reviews },
   ];

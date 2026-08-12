@@ -204,7 +204,7 @@ export async function generateReportPdf(data: DiagnosisResult): Promise<Buffer> 
 
   const page2Rows: [string, { score: number; label: string; text: string }][] = [
     ['FAQ分析', analysis.page2.faq],
-    ['GoogleMap最適化', analysis.page2.googleMap],
+    ['Googleマップ最適化', analysis.page2.googleMap],
     ['AI引用分析', analysis.page2.aiCitation],
     ['口コミ分析', analysis.page2.reviews],
   ];

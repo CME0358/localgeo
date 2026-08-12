@@ -15,7 +15,7 @@ export interface AiSignal {
 export const AI_SIGNALS: AiSignal[] = [
   {
     icon: 'google-map',
-    title: 'GoogleMap情報',
+    title: 'Googleマップ情報',
     description: '営業時間・カテゴリ・位置情報など、店舗基本情報の整合性。',
   },
   {
@@ -46,12 +46,12 @@ export const AI_SIGNALS: AiSignal[] = [
 ];
 
 export const COMPARISON_SECTION = {
-  eyebrow: 'AI検索時代の構造変化',
-  titleLines: ['GoogleMap順位だけでは、', '選ばれなくなる。'],
-  meoIntro: '従来のMEOでは、',
-  meoFocusItems: ['GoogleMap順位', '口コミ数', 'GBP運用'],
+  eyebrow: 'MEO対策とGEO対策の違い',
+  titleLines: ['Googleマップの順位だけでは、', '選ばれなくなる。'],
+  meoIntro: '従来のMEO対策では、',
+  meoFocusItems: ['Googleマップ順位', '口コミ数', 'GBP運用'],
   meoFocusSuffix: 'が中心でした。',
-  aiIntro: 'しかしAI検索では、',
+  aiIntro: 'しかしAI検索対策では、',
   aiFocus: '“AIが店舗をどう理解しているか”',
   aiFocusSuffix: 'が重要になります。',
   aiSignalsTitleLines: ['AIは、', 'こんな情報を見ています。'],
@@ -61,7 +61,7 @@ export const COMPARISON_SECTION = {
     label: '⬛ 従来のMEO',
     title: '検索後の戦い',
     items: [
-      'GoogleMap上での順位競争',
+      'Googleマップ上での順位競争',
       'GBP（Googleビジネスプロフィール）の運用',
       '口コミ件数・評価の管理',
       '写真・営業時間の最新化',
@@ -72,11 +72,11 @@ export const COMPARISON_SECTION = {
     label: '✦ GEO Search Protocol™',
     title: 'AIに選ばれる戦い',
     items: [
-      'AI検索最適化・エンティティ強化',
+      'AI検索対策・エンティティ強化',
       'ChatGPT / Gemini への引用設計',
       'AI Overview対応のFAQ構造化',
-      'GoogleMap広告との統合最適化',
+      'Googleマップ広告との統合最適化',
     ],
-    footer: '→ AIが「あなたの店舗」を推薦するよう設計',
+    footer: '→ AIが「あなたの店舗」を推薦しやすい状態を設計',
   },
 } as const;

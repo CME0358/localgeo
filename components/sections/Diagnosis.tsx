@@ -200,7 +200,7 @@ export function Diagnosis() {
                   <div className="space-y-3 text-sm">
                     {[
                       ['FAQ最適化率', state.result.scores.faqOptimizationRate],
-                      ['GoogleMap最適化率', state.result.scores.googleMapOptimizationRate],
+                      ['Googleマップ最適化率', state.result.scores.googleMapOptimizationRate],
                       ['AI推薦可能性', state.result.scores.aiRecommendationPotential],
                     ].map(([label, val]) => (
                       <div key={label as string}>
@@ -226,7 +226,7 @@ export function Diagnosis() {
                     [
                       ['AI引用状況', state.result.insights.aiCitation],
                       ['口コミ分析', state.result.insights.reviews],
-                      ['GoogleMap最適化', state.result.insights.aiRecommendation],
+                      ['Googleマップ最適化', state.result.insights.aiRecommendation],
                     ] as const
                   ).map(([label, insight]) => (
                     <div key={String(label)} className="rounded-lg border border-white/10 bg-white/5 p-3">

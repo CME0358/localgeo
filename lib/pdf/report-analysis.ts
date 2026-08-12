@@ -61,7 +61,7 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
     local >= 70 && visibility >= 70
       ? `${data.shopName}はAI検索において一定の露出基盤があります。詳細レポートの改善提案を実行することで、推薦獲得の余地をさらに広げられます。`
       : local >= 40 || visibility >= 40
-        ? `${data.shopName}はAI検索での認知に改善余地があります。FAQ・GoogleMap・構造化情報の最適化により、スコア向上が見込めます。`
+        ? `${data.shopName}はAI検索での認知に改善余地があります。FAQ・Googleマップ・構造化情報の最適化により、スコア向上が見込めます。`
         : `${data.shopName}は現状、AI検索での推薦獲得に向けた基盤整備が必要です。Local GEO™施策により、段階的な改善が可能です。`;
 
   return {
@@ -92,7 +92,7 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
             ? 'Google Business Profileの基本情報・カテゴリ・写真は整備されています。口コミ返信と投稿頻度の最適化でさらに強化可能です。'
             : gmap >= 40
               ? 'GBPの情報更新・カテゴリ設定・口コミ数に改善余地があります。AI Overview連動の観点から優先対策を推奨します。'
-              : 'GoogleMap上の店舗情報が不十分な可能性が高いです。プロフィール完成度の向上が急務です。',
+              : 'Googleマップ上の店舗情報が不十分な可能性が高いです。プロフィール完成度の向上が急務です。',
       },
       aiCitation: {
         score: citation,
@@ -127,8 +127,8 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
         score: Math.round(visibility * 0.9 + gmap * 0.1),
         text:
           gmap >= 50
-            ? 'Gemini / AI OverviewはGoogleMapシグナルを参照するため、GBP最適化との相性は良好です。'
-            : 'Gemini表示にはGoogleMap情報の充実が不可欠です。GBP改善が最優先です。',
+            ? 'Gemini / AI OverviewはGoogleマップのシグナルを参照するため、GBP最適化との相性は良好です。'
+            : 'Gemini表示にはGoogleマップ情報の充実が不可欠です。GBP改善が最優先です。',
       },
       competitor: {
         text: `${data.area}エリアの${data.industry}業種では、AI推薦を獲得している競合が先行している可能性があります。Local GEO Score ${local}点は、同業種平均と比較して${local >= 55 ? '平均以上' : '平均以下'}の推定です。`,

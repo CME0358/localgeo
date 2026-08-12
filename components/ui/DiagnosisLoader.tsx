@@ -14,7 +14,7 @@ interface DiagnosisLoaderProps {
 const DIAGNOSIS_NODES = [
   { id: 'gpt', label: 'ChatGPT', color: '#00d48a', angle: -90 },
   { id: 'gemini', label: 'Gemini', color: '#3b72ff', angle: 0 },
-  { id: 'maps', label: 'GoogleMap', color: '#febc2e', angle: 90 },
+  { id: 'maps', label: 'Googleマップ', color: '#febc2e', angle: 90 },
   { id: 'score', label: 'AI Score', color: '#ff385c', angle: 180 },
 ] as const;
 
