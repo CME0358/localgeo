@@ -20,6 +20,7 @@ interface DiagnosisUiState {
   formError: string;
   reportError: string;
   reportEmail: string | null;
+  reportWarning: string | null;
 }
 
 type Action =
@@ -29,7 +30,7 @@ type Action =
   | { type: 'SUBMIT_ERROR'; message: string }
   | { type: 'REPORT_START' }
   | { type: 'REPORT_STEP'; index: number; label: string }
-  | { type: 'REPORT_SUCCESS'; email: string }
+  | { type: 'REPORT_SUCCESS'; email: string; warning?: string }
   | { type: 'REPORT_ERROR'; message: string }
   | { type: 'RESET_REPORT' };
 
@@ -41,6 +42,7 @@ const initialState: DiagnosisUiState = {
   formError: '',
   reportError: '',
   reportEmail: null,
+  reportWarning: null,
 };
 
 function reducer(state: DiagnosisUiState, action: Action): DiagnosisUiState {
@@ -54,6 +56,7 @@ function reducer(state: DiagnosisUiState, action: Action): DiagnosisUiState {
         formError: '',
         reportError: '',
         reportEmail: null,
+        reportWarning: null,
       };
     case 'LOADING_STEP':
       return { ...state, loadingStep: action.index, loadingLabel: action.label };
@@ -72,7 +75,12 @@ function reducer(state: DiagnosisUiState, action: Action): DiagnosisUiState {
     case 'REPORT_STEP':
       return { ...state, loadingStep: action.index, loadingLabel: action.label };
     case 'REPORT_SUCCESS':
-      return { ...state, status: 'report-complete', reportEmail: action.email };
+      return {
+        ...state,
+        status: 'report-complete',
+        reportEmail: action.email,
+        reportWarning: action.warning ?? null,
+      };
     case 'REPORT_ERROR':
       return { ...state, status: 'error', reportError: action.message };
     case 'RESET_REPORT':
@@ -137,7 +145,7 @@ export function useDiagnosis() {
       dispatch({ type: 'REPORT_START' });
 
       try {
-        await sendReport(
+        const response = await sendReport(
           {
             email,
             contactName: form.contactName,
@@ -153,7 +161,11 @@ export function useDiagnosis() {
           industry: state.result.industry,
           area: state.result.area,
         });
-        dispatch({ type: 'REPORT_SUCCESS', email });
+        dispatch({
+          type: 'REPORT_SUCCESS',
+          email,
+          warning: response.devWarning,
+        });
       } catch (e) {
         dispatch({
           type: 'REPORT_ERROR',

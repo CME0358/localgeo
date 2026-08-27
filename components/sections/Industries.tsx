@@ -24,7 +24,7 @@ export function Industries() {
         </>
       }
     >
-      <MotionStagger className="grid gap-6 md:grid-cols-3">
+      <MotionStagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.cards.map((card) => (
           <MotionItem key={card.name}>
             <Card variant="light" className="flex h-full flex-col p-6 md:p-7">
@@ -37,20 +37,34 @@ export function Industries() {
                 {card.icon}
               </div>
               <h3 className="text-xl font-bold text-[#222222]">{card.name}</h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-[#6a6a6a]">
+
+              {card.queries?.length ? (
+                <div className="mt-4 space-y-2">
+                  {card.queries.map((query) => (
+                    <p key={query} className="text-sm leading-relaxed text-[#3b72ff]/90">
+                      「{query}」
+                    </p>
+                  ))}
+                </div>
+              ) : null}
+
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-[#6a6a6a]">
                 {card.description}
               </p>
-              <ul className="mt-5 space-y-2 border-t border-black/5 pt-5">
-                {card.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2 text-sm text-[#222222]"
-                  >
-                    <span className="mt-1 text-[#3b72ff]">•</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+
+              {card.features?.length ? (
+                <ul className="mt-5 space-y-2 border-t border-black/5 pt-5">
+                  {card.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-start gap-2 text-sm text-[#222222]"
+                    >
+                      <span className="mt-1 text-[#3b72ff]">•</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </Card>
           </MotionItem>
         ))}

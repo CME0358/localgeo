@@ -7,7 +7,7 @@ import { defaultLanding } from '@/lib/content/default-landing';
 
 const title = defaultLanding.meta.title;
 const description =
-  'MEO対策だけでは不十分な時代に。ChatGPT・Gemini・AI OverviewでAI推薦されやすい店舗を設計。エステ・整体・美容室対応。Googleマップ最適化も込み。月額60,000円〜。';
+  'オーガニック検索対策だけでは不十分な時代に。ChatGPT・Gemini・AI OverviewでAI推薦されやすい店舗を設計。歯科・クリニック・エステ・整体・美容室対応。SEO・MEO・Googleマップ最適化も込み。月額60,000円〜。';
 
 const ogImage = {
   url: '/images/geo-before-after.png',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title,
     description,
     url: '/',
-    siteName: 'GEO Search Protocol for Local',
+    siteName: 'Agent Readiness Index for Local',
     locale: 'ja_JP',
     type: 'website',
     images: [ogImage],

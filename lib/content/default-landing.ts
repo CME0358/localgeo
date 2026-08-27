@@ -2,11 +2,11 @@ import type { LandingPageContent } from '@/lib/types/content';
 
 export const defaultLanding: LandingPageContent = {
   meta: {
-    title: 'MEO対策・GEO対策｜AI検索で推薦される店舗へ — Local GEO™',
+    title: 'オーガニック検索・AI検索対策｜AIに推薦される店舗へ — Local GEO™',
   },
   nav: {
-    logo: 'GEO Search',
-    logoAccent: 'Protocol',
+    logo: 'Agent Readiness',
+    logoAccent: 'Index',
     links: [
       { label: '課題', href: '#problem' },
       { label: '比較', href: '#comparison' },
@@ -16,18 +16,20 @@ export const defaultLanding: LandingPageContent = {
     ],
   },
   hero: {
-    eyebrow: 'AI Search Era · 2026',
-    titleLines: ['MEO対策だけでは、', 'もう', '。', 'これからは', 'される店舗へ。'],
+    eyebrow: 'Agent Readiness Index™ · AI Search Readiness for Local Business',
+    titleLines: ['オーガニック検索対策だけでは、', 'もう', '。', 'これからは', 'される店舗へ。'],
     titleAccent: '不十分',
     titleAiText: 'AIに推薦',
     titleAiHighlightLines: ['AIに', '推薦'],
     subtitleLines: [
-      'ChatGPT・Gemini・Google AI Overviewが',
-      '「おすすめ店舗」を表示する時代。',
-      'Googleマップ・MEO対策の順位だけでは、',
-      'AI検索で選ばれなくなっています。',
+      'ChatGPT・Gemini・Google AI Overviewが、',
+      '店舗やサービスを比較し、推薦する時代。',
+      'Google検索・マップのオーガニック対策だけでなく、',
+      'AIに正しく理解・評価される状態が',
+      '重要になっています。',
     ],
     platformBadges: [
+      'オーガニック検索 対応',
       'ChatGPT 店舗集客',
       'Gemini 対応',
       'AI Overview 対応',
@@ -36,7 +38,7 @@ export const defaultLanding: LandingPageContent = {
     primaryCta: { label: '🔍 無料AI推薦診断', href: '#diagnosis' },
     secondaryCta: { label: '詳しく見る →', href: '#comparison' },
     visual: {
-      dashboardTitle: 'AI Visibility Dashboard',
+      dashboardTitle: 'Agent Readiness Dashboard',
       queryLabel: 'ChatGPT — 検索クエリ',
       queryText: '「渋谷でおすすめのエステサロンを教えて」',
       results: [
@@ -59,8 +61,8 @@ export const defaultLanding: LandingPageContent = {
         },
       ],
       scores: [
-        { value: '94', label: 'AI Visibility Score' },
-        { value: '87', label: 'GEO Score' },
+        { value: '94', label: 'AI Visibility' },
+        { value: '87', label: 'ARI Score' },
       ],
     },
   },
@@ -109,33 +111,37 @@ export const defaultLanding: LandingPageContent = {
     ],
   },
   comparison: {
-    eyebrow: 'MEO対策とGEO対策の違い',
-    titleLines: ['Googleマップの順位だけでは、', '選ばれなくなる。'],
+    eyebrow: 'オーガニック検索対策とAI検索対策の違い',
+    titleLines: ['検索で「見つかる」だけでは、', 'AIに「選ばれる」とは限らない。'],
     subtitleLines: [
-      '従来のMEO対策では、Googleマップ順位・口コミ数・GBP運用が中心でした。',
-      'しかしAI検索では、“AIが店舗をどう理解しているか”が重要になります。',
+      'オーガニック検索対策（SEO・MEO）では、Google検索やGoogleマップで見つけてもらうための最適化が中心です。',
+      '一方、AI検索対策では、「AIが店舗やサービスをどう理解し、比較し、推薦するか」という視点が重要になります。SEO・MEOに加えて、両方を整えることが重要です。',
     ],
     old: {
-      label: '⬛ 従来のMEO',
-      title: '検索後の戦い',
+      label: '⬛ オーガニック検索対策（SEO・MEO）',
+      title: '検索・マップで見つけてもらう',
       items: [
-        { text: 'Googleマップ上での順位競争' },
-        { text: 'GBP（Googleビジネスプロフィール）の運用' },
-        { text: '口コミ件数・評価の管理' },
-        { text: '写真・営業時間の最新化' },
+        { text: 'Google検索での表示・順位' },
+        { text: 'Googleマップ上での順位（MEO）' },
+        { text: 'Googleビジネスプロフィール（GBP）整備' },
+        { text: '口コミ・評価の管理' },
+        { text: '公式サイト / ローカルSEOコンテンツ' },
+        { text: '地域キーワード・店舗名検索の最適化' },
+        { text: '構造化データ（Schema markup）' },
       ],
       footer: '↓ ユーザーが複数を見比べる前提の戦略',
     },
     new: {
-      label: '✦ GEO Search Protocol™',
-      title: 'AIに選ばれる戦い',
+      label: '✦ Agent Readiness Index™',
+      title: 'AIに理解・比較・推薦される状態を確認',
       items: [
-        { text: 'AI検索対策・エンティティ強化' },
-        { text: 'ChatGPT / Gemini への引用設計' },
-        { text: 'AI Overview対応のFAQ構造化' },
-        { text: 'Googleマップ広告との統合最適化' },
+        { text: 'AI検索上のVisibility確認' },
+        { text: '店舗・サービス情報の理解性' },
+        { text: 'ChatGPT / Gemini等での推薦状況' },
+        { text: 'FAQ・コンテンツのAI理解性' },
+        { text: '予約・問い合わせ導線の確認' },
       ],
-      footer: '→ AIが「あなたの店舗」を推薦しやすい状態を設計',
+      footer: 'ARIで現状を診断し、Local GEO™で改善',
     },
   },
   services: {
@@ -143,43 +149,76 @@ export const defaultLanding: LandingPageContent = {
     titleLines: ['あなたの業種に特化した', 'AI推薦戦略を設計。'],
     cards: [
       {
+        icon: '🦷',
+        iconVariant: 'blue',
+        name: '歯科医院',
+        queries: ['近くで土曜診療している歯医者', 'インプラントに強い歯科'],
+        description:
+          '診療内容・地域・診療時間・専門性などが、AIに正しく理解され、推薦候補になっているかを確認。',
+      },
+      {
+        icon: '🏥',
+        iconVariant: 'green',
+        name: 'クリニック・医院',
+        queries: ['駅近で予約が取りやすいクリニック', '小児科に対応している医院'],
+        description:
+          '診療科目・地域・アクセス・予約導線などが、AI検索上で正しく伝わっているかを確認。',
+      },
+      {
+        icon: '💉',
+        iconVariant: 'pink',
+        name: '美容クリニック',
+        queries: ['ダーマペンが評判の美容クリニック', '初回カウンセリング無料のクリニック'],
+        description:
+          '施術内容・料金・実績・地域などが、AIに正しく理解され、比較候補になっているかを確認。',
+      },
+      {
         icon: '💆‍♀️',
         iconVariant: 'pink',
-        name: 'エステサロン',
+        name: 'エステ・美容サロン',
+        queries: ['毛穴ケアが評判の近くのエステ', '初回体験ができる美容サロン'],
         description:
-          '「肌荒れ」「毛穴ケア」「痩身」など悩み別のAI引用設計で、ChatGPTおすすめ表示に近づく店舗集客を実現。',
-        features: [
-          '「渋谷 おすすめエステ」AI推薦対策',
-          'ビフォーアフター口コミの構造化',
-          '施術別FAQ / Schema markup',
-          'AI推薦スコア月次モニタリング',
-        ],
+          '施術メニュー・悩み別対応・地域・口コミなどが、AI推薦候補として認識されているかを確認。',
+      },
+      {
+        icon: '✂️',
+        iconVariant: 'green',
+        name: '美容室・ヘアサロン',
+        queries: ['縮毛矯正が得意な近くの美容室', 'メンズカットが評判のサロン'],
+        description:
+          '技術・スタイル・スタイリスト・立地などが、AI検索上で正しく伝わっているかを確認。',
       },
       {
         icon: '🦴',
         iconVariant: 'blue',
         name: '整体・整骨院',
+        queries: ['肩こりに対応している近くの整体', '産後ケアができる整骨院'],
         description:
-          '「腰痛」「肩こり」「産後ケア」など症状別のAI認識を最適化。ローカルSEOとMEO対策を踏まえた地域推薦を強化。',
-        features: [
-          '「近くの整体」AI推薦ポジション強化',
-          '症状別FAQ構造化（腰痛・肩こり等）',
-          '保険対応・国家資格 エンティティ強化',
-          'Googleマップ広告との統合最適化',
-        ],
+          '症状・施術内容・地域・特徴をAIが正しく理解できる状態を確認。',
       },
       {
-        icon: '✂️',
+        icon: '🏋️',
         iconVariant: 'green',
-        name: '美容室',
+        name: 'パーソナルジム・フィットネス',
+        queries: ['初心者向けの近くのパーソナルジム', '女性向けで通いやすいジム'],
         description:
-          '「縮毛矯正」「カラーリング」「トリートメント」などスタイル別のAI引用設計で、店舗 AI検索対策を強化。',
-        features: [
-          'スタイル・技術別AI推薦最適化',
-          'スタイリスト別エンティティ構築',
-          '写真・口コミのAI認識最適化',
-          'SNS連携AI Visibility強化',
-        ],
+          '対象ユーザー・目的・料金・立地などが、AI検索上で正しく伝わっているかを確認。',
+      },
+      {
+        icon: '🍽️',
+        iconVariant: 'pink',
+        name: '飲食店',
+        queries: ['デート向けの静かなレストラン', '子連れOKの近くのカフェ'],
+        description:
+          '料理ジャンル・雰囲気・立地・予約導線などが、AIに正しく理解され、推薦候補になっているかを確認。',
+      },
+      {
+        icon: '🏠',
+        iconVariant: 'blue',
+        name: '不動産・地域サービス',
+        queries: ['駅近の賃貸マンションを探している', '地域密着の修繕業者を探している'],
+        description:
+          'エリア・サービス内容・強み・問い合わせ導線などが、AI検索上で正しく伝わっているかを確認。',
       },
     ],
   },
@@ -190,7 +229,11 @@ export const defaultLanding: LandingPageContent = {
       '今この瞬間も、競合がChatGPTやGoogleマップ経由で集客し続けています。',
       '差は、じわじわと広がっていきます。',
     ],
-    headers: ['確認項目', 'あなたの店舗', '競合A', '競合B（GEO導入済）'],
+    headers: ['確認項目', 'あなたの店舗', '競合A', '競合B\nAI推薦されている競合'],
+    competitorBCta: {
+      label: 'あなたの店舗はAIからどう見えている？無料AI推薦診断で確認',
+      href: '#diagnosis',
+    },
     rows: [
       {
         label: 'ChatGPTへの表示・推薦',
@@ -233,7 +276,7 @@ export const defaultLanding: LandingPageContent = {
   caseStudy: {
     eyebrow: '導入事例',
     titleLines: ['AI検索時代、', '"選ばれる店舗"は', '変わり始めています。'],
-    subtitle: '実際のChatGPT検索結果ベースで、GEO対策の有無による差分を公開します。',
+    subtitle: '実際のChatGPT検索結果ベースで、AI検索上の表示・推薦状況の変化を公開します。',
     badge: 'CASE — 「恵比寿 地下バー」ChatGPT検索結果',
     images: [
       {
@@ -354,10 +397,10 @@ export const defaultLanding: LandingPageContent = {
     eyebrow: '料金プラン',
     titleLines: ['シンプルな', '月払い・年払い。'],
     subtitleLines: [
-      'MEO対策・GEO対策を含む契約・運用・レポートまで全て込み。',
+      'オーガニック検索・AI検索対策を含む契約・運用・レポートまで全て込み。',
       '余計なオプションや隠れコストは一切ありません。',
     ],
-    badge: '✦ GEO Search Protocol™ for Local',
+    badge: '✦ Agent Readiness Index™ for Local',
     serviceName: 'Full Protocol Plan',
     currency: '¥',
     paymentOptions: {
@@ -376,11 +419,13 @@ export const defaultLanding: LandingPageContent = {
     },
     features: [
       'Local GEO™戦略設計',
-      'Googleマップ最適化（MEO対策）',
+      'オーガニック検索対策（SEO・ローカルSEO）',
+      'Googleマップ最適化（MEO）',
       'AI推薦対策（ChatGPT/Gemini）',
       'AI引用・エンティティ強化',
       'FAQ構造化（Schema markup）',
       '口コミ収集・最適化設計',
+      '地域キーワード・コンテンツ設計',
       'Googleマップ広告最適化',
       '月次AI診断レポート',
       'Zoom月次MTG（20分）',
@@ -392,8 +437,8 @@ export const defaultLanding: LandingPageContent = {
     },
     noteLines: [
       '※ まずは無料のAI推薦診断からお気軽にどうぞ。',
-      'MEO対策の費用感も含め、診断後に担当者よりご提案いたします。',
-      '他社MEO対策からの乗り換えもご相談ください。',
+      'オーガニック検索・MEOの費用感も含め、診断後に担当者よりご提案いたします。',
+      '他社SEO・MEO対策からの乗り換えもご相談ください。',
     ],
   },
   finalCta: {
@@ -413,8 +458,8 @@ export const defaultLanding: LandingPageContent = {
     },
   },
   footer: {
-    brand: 'GEO Search',
-    brandAccent: 'Protocol',
+    brand: 'Agent Readiness',
+    brandAccent: 'Index',
     companyName: '合同会社コア・リテール（CoaRetail G.K.）',
     companyUrl: 'https://www.coaretail.com',
     privacyLabel: 'プライバシーポリシー',

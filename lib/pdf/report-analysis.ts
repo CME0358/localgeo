@@ -1,4 +1,5 @@
 import type { DiagnosisResult } from '@/lib/types/diagnosis';
+import { industryLabel } from '@/lib/constants/diagnosis';
 
 type ScoreTier = 'high' | 'mid' | 'low';
 
@@ -131,7 +132,7 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
             : 'Gemini表示にはGoogleマップ情報の充実が不可欠です。GBP改善が最優先です。',
       },
       competitor: {
-        text: `${data.area}エリアの${data.industry}業種では、AI推薦を獲得している競合が先行している可能性があります。Local GEO Score ${local}点は、同業種平均と比較して${local >= 55 ? '平均以上' : '平均以下'}の推定です。`,
+        text: `${data.area}エリアの${industryLabel(data.industry)}業種では、AI推薦を獲得している競合が先行している可能性があります。Local GEO Score ${local}点は、同業種平均と比較して${local >= 55 ? '平均以上' : '平均以下'}の推定です。`,
       },
       improvements: [
         faq < 60 ? 'FAQページの新設・構造化（地域名+業種キーワードを含むQ&A）' : null,
@@ -141,7 +142,7 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
         recommendation < 60 ? 'AI推薦向けコンテンツ（比較・選び方・地域特化情報）の追加' : null,
       ].filter((item): item is string => item !== null),
       localGeoProposal:
-        'GEO Search Protocol™ for Local では、AI露出診断→情報設計→優先3項目の実装を伴走型で支援します。まずはGBP・FAQ・構造化データの3点セットから着手することを推奨します。',
+        'Agent Readiness Index™ for Local では、AI露出診断→情報設計→優先3項目の実装を伴走型で支援します。まずはGBP・FAQ・構造化データの3点セットから着手することを推奨します。',
     },
   };
 }

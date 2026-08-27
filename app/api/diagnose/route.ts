@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { rateLimitOrNull, clampField } from '@/lib/rate-limit';
 import { buildMockResult } from '@/lib/mock';
 import type {
   DiagnosisInput,
@@ -265,7 +266,12 @@ function mergeDiagnosisResult(
   };
 }
 
+const MAX_FIELD = 200;
+
 export async function POST(request: Request): Promise<NextResponse> {
+  const limited = rateLimitOrNull(request, 'diagnose');
+  if (limited) return limited;
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
@@ -273,10 +279,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: 'JSON が不正です' }, { status: 400 });
   }
 
-  const shopName = String(body.shopName ?? '').trim();
-  const area = String(body.area ?? '').trim();
-  const industry = String(body.industry ?? '').trim();
-  const sessionId = String(body.sessionId ?? '').trim() || null;
+  const shopName = clampField(body.shopName, MAX_FIELD);
+  const area = clampField(body.area, MAX_FIELD);
+  const industry = clampField(body.industry, MAX_FIELD);
+  const sessionId = clampField(body.sessionId, 96) || null;
 
   if (!shopName || !area || !industry) {
     logRequest('[diagnose] invalid', request, { sessionId, shopName, area, industry });

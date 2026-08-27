@@ -1,6 +1,6 @@
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { MotionItem, MotionStagger, SectionShell } from '@/components/ui/SectionShell';
-import { Tm } from '@/components/ui/Tm';
+import { SectionShell } from '@/components/ui/SectionShell';
 import { defaultLanding } from '@/lib/content/default-landing';
 import type { ComparisonStatus } from '@/lib/types/content';
 import { cn } from '@/lib/utils';
@@ -20,8 +20,32 @@ function StatusCell({ status }: { status: ComparisonStatus }) {
   );
 }
 
+function HeaderCell({ text, index }: { text: string; index: number }) {
+  const lines = text.split('\n');
+
+  return (
+    <div
+      className={cn(
+        index > 0 && 'text-center',
+        index === 1 && 'text-[#3b72ff]',
+        index === 3 && 'text-[#00d48a]',
+      )}
+    >
+      {lines.map((line, lineIndex) => (
+        <span
+          key={`${line}-${lineIndex}`}
+          className={lineIndex > 0 ? 'block text-xs font-normal' : undefined}
+        >
+          {line}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function LocalGeo() {
   const { competition } = defaultLanding;
+  const competitorBLabel = competition.headers[3].replace('\n', ' — ');
 
   return (
     <SectionShell
@@ -48,16 +72,7 @@ export function LocalGeo() {
       <Card variant="glass" className="overflow-hidden p-0">
         <div className="hidden grid-cols-4 gap-4 border-b border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold text-white/70 md:grid">
           {competition.headers.map((header, index) => (
-            <div
-              key={header}
-              className={cn(
-                index > 0 && 'text-center',
-                index === 1 && 'text-[#3b72ff]',
-                index === 3 && 'text-[#00d48a]',
-              )}
-            >
-              {header}
-            </div>
+            <HeaderCell key={header} text={header} index={index} />
           ))}
         </div>
 
@@ -79,15 +94,19 @@ export function LocalGeo() {
                 <StatusCell status={row.competitorA} />
               </div>
               <div className="flex items-center justify-between md:justify-center md:text-center">
-                <span className="text-xs text-[#00d48a]/70 md:hidden">
-                  競合B（GEO導入済）
-                </span>
+                <span className="text-xs text-[#00d48a]/70 md:hidden">{competitorBLabel}</span>
                 <StatusCell status={row.competitorB} />
               </div>
             </div>
           ))}
         </div>
       </Card>
+
+      {competition.competitorBCta ? (
+        <div className="mt-8 flex justify-center">
+          <Button href={competition.competitorBCta.href}>{competition.competitorBCta.label}</Button>
+        </div>
+      ) : null}
     </SectionShell>
   );
 }

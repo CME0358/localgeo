@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { MotionItem, MotionStagger, SectionShell } from '@/components/ui/SectionShell';
-import { Tm } from '@/components/ui/Tm';
 import { AI_SIGNALS, COMPARISON_SECTION } from '@/lib/comparison';
 
 const FLOW_ALT = '検索 → AIが店舗を理解 → AIが推薦 → 来店';
@@ -159,10 +158,7 @@ export function Comparison() {
         <MotionItem>
           <Card variant="dark" className="relative flex h-full flex-col overflow-hidden p-6 md:p-8">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#3b72ff] to-[#00d48a]" />
-            <p className="text-sm font-semibold text-[#00c2ff]">
-              ✦ GEO Search Protocol
-              <Tm />
-            </p>
+            <p className="text-sm font-semibold text-[#00c2ff]">{section.new.label}</p>
             <h3 className="mt-3 text-2xl font-bold text-white">{section.new.title}</h3>
             <ul className="mt-6 flex-1 space-y-3">
               {section.new.items.map((item) => (

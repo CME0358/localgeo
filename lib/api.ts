@@ -90,6 +90,25 @@ export interface SendReportResponse {
   channels?: NotifyChannelResult[];
   error?: string;
   detail?: string;
+  code?: string;
+  devPdfBase64?: string;
+  devWarning?: string;
+}
+
+function downloadPdfBase64(base64: string, filename = 'AI-Visibility-Report.pdf') {
+  if (typeof window === 'undefined') return;
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
 export async function sendReport(
@@ -137,11 +156,19 @@ export async function sendReport(
       throw new Error(json.error ?? json.detail ?? '送信に失敗しました');
     }
 
+    if (json.devPdfBase64) {
+      downloadPdfBase64(json.devPdfBase64);
+    }
+
     if (!json.emailSent) {
+      if (json.devPdfBase64 && json.devWarning) {
+        return json;
+      }
       throw new Error(
         json.emailSkipped
-          ? 'メール送信設定が未完了です。しばらくしてから再度お試しください。'
-          : 'メールの送付に失敗しました',
+          ? json.devWarning ??
+              'メール送信設定が未完了です。しばらくしてから再度お試しください。'
+          : json.error ?? 'メールの送付に失敗しました',
       );
     }
 

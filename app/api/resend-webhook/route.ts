@@ -8,6 +8,7 @@ import {
   slackServiceLabel,
 } from '@/lib/slack-messages';
 import type { SlackServiceKey } from '@/lib/slack-messages';
+import { verifyResendWebhook } from '@/lib/verify-resend-webhook';
 
 interface ResendWebhookPayload {
   type: string;
@@ -39,7 +40,19 @@ function resolveServiceLabel(
 
 export async function POST(req: NextRequest) {
   try {
-    const payload: ResendWebhookPayload = await req.json();
+    const rawBody = await req.text();
+    const webhookSecret = process.env.RESEND_WEBHOOK_SECRET?.trim();
+    if (!webhookSecret) {
+      console.error('[resend-webhook] RESEND_WEBHOOK_SECRET is not set');
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 });
+    }
+    verifyResendWebhook(rawBody, {
+      id: req.headers.get('svix-id'),
+      timestamp: req.headers.get('svix-timestamp'),
+      signature: req.headers.get('svix-signature'),
+    }, webhookSecret);
+
+    const payload: ResendWebhookPayload = JSON.parse(rawBody);
 
     if (payload.type !== 'email.delivered') {
       return NextResponse.json({ message: `Ignored: ${payload.type}` }, { status: 200 });
@@ -85,6 +98,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (message.includes('Svix') || message.includes('signature') || message.includes('webhook')) {
+      console.error('[resend-webhook] unauthorized:', message);
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     console.error('[resend-webhook]', err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }

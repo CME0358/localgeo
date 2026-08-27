@@ -4,7 +4,8 @@ export type AiSignalIcon =
   | 'reviews'
   | 'mention'
   | 'entity'
-  | 'local';
+  | 'local'
+  | 'organic';
 
 export interface AiSignal {
   title: string;
@@ -13,6 +14,11 @@ export interface AiSignal {
 }
 
 export const AI_SIGNALS: AiSignal[] = [
+  {
+    icon: 'organic',
+    title: 'オーガニック検索',
+    description: 'Google検索・地域キーワード・公式サイトでの表示と評価。',
+  },
   {
     icon: 'google-map',
     title: 'Googleマップ情報',
@@ -46,37 +52,42 @@ export const AI_SIGNALS: AiSignal[] = [
 ];
 
 export const COMPARISON_SECTION = {
-  eyebrow: 'MEO対策とGEO対策の違い',
-  titleLines: ['Googleマップの順位だけでは、', '選ばれなくなる。'],
-  meoIntro: '従来のMEO対策では、',
-  meoFocusItems: ['Googleマップ順位', '口コミ数', 'GBP運用'],
-  meoFocusSuffix: 'が中心でした。',
-  aiIntro: 'しかしAI検索対策では、',
-  aiFocus: '“AIが店舗をどう理解しているか”',
-  aiFocusSuffix: 'が重要になります。',
+  eyebrow: 'オーガニック検索対策とAI検索対策の違い',
+  titleLines: ['検索で「見つかる」だけでは、', 'AIに「選ばれる」とは限らない。'],
+  meoIntro:
+    'オーガニック検索対策（SEO・MEO）では、Google検索やGoogleマップで見つけてもらうための最適化が中心です。',
+  meoFocusItems: [] as string[],
+  meoFocusSuffix: '',
+  aiIntro: '一方、AI検索対策では、',
+  aiFocus: '「AIが店舗やサービスをどう理解し、比較し、推薦するか」',
+  aiFocusSuffix: 'という視点が重要になります。SEO・MEOに加えて、両方を整えることが重要です。',
   aiSignalsTitleLines: ['AIは、', 'こんな情報を見ています。'],
   aiSignalsFooterLines: ['AIが、', '“おすすめ店舗”', 'を選び始めています。'],
   flowSteps: ['検索', 'AIが店舗を理解', 'AIが推薦', '来店'],
   old: {
-    label: '⬛ 従来のMEO',
-    title: '検索後の戦い',
+    label: '⬛ オーガニック検索対策（SEO・MEO）',
+    title: '検索・マップで見つけてもらう',
     items: [
-      'Googleマップ上での順位競争',
-      'GBP（Googleビジネスプロフィール）の運用',
-      '口コミ件数・評価の管理',
-      '写真・営業時間の最新化',
+      'Google検索での表示・順位',
+      'Googleマップ上での順位（MEO）',
+      'Googleビジネスプロフィール（GBP）整備',
+      '口コミ・評価の管理',
+      '公式サイト / ローカルSEOコンテンツ',
+      '地域キーワード・店舗名検索の最適化',
+      '構造化データ（Schema markup）',
     ],
     footer: '↓ ユーザーが複数を見比べる前提の戦略',
   },
   new: {
-    label: '✦ GEO Search Protocol™',
-    title: 'AIに選ばれる戦い',
+    label: '✦ Agent Readiness Index™',
+    title: 'AIに理解・比較・推薦される状態を確認',
     items: [
-      'AI検索対策・エンティティ強化',
-      'ChatGPT / Gemini への引用設計',
-      'AI Overview対応のFAQ構造化',
-      'Googleマップ広告との統合最適化',
+      'AI検索上のVisibility確認',
+      '店舗・サービス情報の理解性',
+      'ChatGPT / Gemini等での推薦状況',
+      'FAQ・コンテンツのAI理解性',
+      '予約・問い合わせ導線の確認',
     ],
-    footer: '→ AIが「あなたの店舗」を推薦しやすい状態を設計',
+    footer: 'ARIで現状を診断し、Local GEO™で改善',
   },
 } as const;

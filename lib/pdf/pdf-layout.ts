@@ -46,7 +46,7 @@ export function fillPageBg(page: PDFPage): void {
 export function drawHeader(page: PDFPage, fonts: ReportFonts): void {
   const { width, height } = page.getSize();
   page.drawRectangle({ x: 0, y: height - HEADER_H, width, height: HEADER_H, color: NAVY });
-  page.drawText('GEO Search Protocol TM', {
+  page.drawText('Agent Readiness Index TM', {
     x: MARGIN,
     y: height - 44,
     size: 10,

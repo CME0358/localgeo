@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { defaultLandingContent } from '@/lib/content/default-landing';
-import { INDUSTRIES } from '@/lib/constants/diagnosis';
+import { INDUSTRIES, industryLabel } from '@/lib/constants/diagnosis';
 import { useDiagnosis } from '@/hooks/useDiagnosis';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { GlassPanel } from '@/components/ui/GlassPanel';
@@ -162,7 +162,7 @@ export function Diagnosis() {
             {state.status === 'idle' && (
               <div className="flex h-full flex-col justify-center text-center">
                 <p className="text-xs font-semibold uppercase tracking-widest text-[#00d48a]">
-                  AI Visibility Dashboard
+                  Agent Readiness Dashboard
                 </p>
                 <p className="mt-3 text-lg font-bold text-white">診断結果がここに表示されます</p>
               </div>
@@ -186,7 +186,7 @@ export function Diagnosis() {
                   <p className="text-xs uppercase tracking-widest text-white/45">診断レポート</p>
                   <h4 className="mt-1 text-xl font-bold text-white">{state.result.shopName}</h4>
                   <p className="text-sm text-white/55">
-                    {state.result.area} · {state.result.industry}
+                    {state.result.area} · {industryLabel(state.result.industry)}
                   </p>
                 </header>
 
@@ -300,14 +300,25 @@ export function Diagnosis() {
                   ✓
                 </div>
                 <h4 className="mt-6 text-xl font-bold text-white">{content.dashboard.reportCompleteTitle}</h4>
-                <p className="mt-4 text-sm leading-relaxed text-white/70">
-                  入力いただいたメールアドレス
-                  <br />
-                  <strong className="text-white">{state.reportEmail}</strong>
-                  <br />
-                  へ詳細レポートを送付しました。
-                </p>
-                <p className="mt-4 text-xs text-white/45">{content.dashboard.reportCompleteSub}</p>
+                {state.reportWarning ? (
+                  <>
+                    <p className="mt-4 text-sm leading-relaxed text-[#febc2e]">{state.reportWarning}</p>
+                    <p className="mt-4 text-xs text-white/45">
+                      PDFはブラウザにダウンロードされています。
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="mt-4 text-sm leading-relaxed text-white/70">
+                      入力いただいたメールアドレス
+                      <br />
+                      <strong className="text-white">{state.reportEmail}</strong>
+                      <br />
+                      へ詳細レポートを送付しました。
+                    </p>
+                    <p className="mt-4 text-xs text-white/45">{content.dashboard.reportCompleteSub}</p>
+                  </>
+                )}
               </div>
             )}
 

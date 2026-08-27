@@ -42,7 +42,9 @@ export interface ServiceCard {
   iconVariant: 'pink' | 'blue' | 'green';
   name: string;
   description: string;
-  features: string[];
+  /** @deprecated use queries — kept for schema fallbacks */
+  features?: string[];
+  queries?: string[];
 }
 
 export interface CompetitionRow {
@@ -162,6 +164,7 @@ export interface LandingPageContent {
     titleLines: string[];
     subtitleLines: string[];
     headers: [string, string, string, string];
+    competitorBCta?: { label: string; href: string };
     rows: CompetitionRow[];
   };
   caseStudy: {

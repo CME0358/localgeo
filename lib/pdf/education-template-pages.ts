@@ -63,7 +63,7 @@ async function buildEducationDoc(data: DiagnosisResult): Promise<PDFDocument> {
     'Mention不足',
     '地域関連性不足',
     '知らないうちに負ける',
-    'GEO Search Protocol',
+    'Agent Readiness Index',
   ];
   const fonts = await loadReportFonts(pdfDoc, texts);
 
@@ -182,7 +182,7 @@ async function buildEducationDoc(data: DiagnosisResult): Promise<PDFDocument> {
   const rightX = MARGIN + CONTENT_W * 0.62;
   let ry = CONTENT_TOP - 28;
   e4.drawRectangle({ x: rightX, y: ry - 120, width: CONTENT_W * 0.38, height: 120, color: ACCENT });
-  drawJpText(e4, 'GEO Search Protocol', rightX + 12, ry - 24, 9, fonts.jp, WHITE);
+  drawJpText(e4, 'Agent Readiness Index', rightX + 12, ry - 24, 9, fonts.jp, WHITE);
   drawJpText(e4, 'TM for Local', rightX + 12, ry - 38, 9, fonts.jp, WHITE);
   drawJpText(e4, '月額 ¥60,000 / 年払い ¥600,000', rightX + 12, ry - 64, 14, fonts.jp, WHITE);
   drawJpText(e4, '（12ヶ月契約）', rightX + 12, ry - 82, 9, fonts.jp, WHITE);

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { rateLimitOrNull } from '@/lib/rate-limit';
 import {
   buildLeadPayload,
   buildSlackDiagnosisLeadMessage,
@@ -21,6 +22,9 @@ function logRequest(tag: string, request: Request, data: Record<string, unknown>
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const limited = rateLimitOrNull(request, 'send');
+  if (limited) return limited;
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;

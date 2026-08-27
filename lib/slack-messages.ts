@@ -123,5 +123,5 @@ export function detectSlackServiceFromResend(input: {
   const f = from || '';
   if (f.includes('aiscan') || f.includes('geo-lp')) return 'geo-lp';
   if (f.includes('localgeo')) return 'localgeo';
-  return '🔔 GEO Search Protocol';
+  return '🔔 Agent Readiness Index';
 }

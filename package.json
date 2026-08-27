@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:resend": "node scripts/check-resend.mjs"
   },
   "dependencies": {
     "@fontsource/noto-sans-jp": "^5.2.9",

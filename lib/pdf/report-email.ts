@@ -1,4 +1,5 @@
 import { SITE_URL } from '@/lib/constants/site';
+import { industryLabel } from '@/lib/constants/diagnosis';
 import { buildReportAnalysis } from '@/lib/pdf/report-analysis';
 import type { DiagnosisResult } from '@/lib/types/diagnosis';
 
@@ -75,7 +76,7 @@ export function buildReportEmailHtml({
     <div style="padding:32px 36px;">
       <p style="color:#374151;line-height:1.7;margin:0 0 20px;">${greeting}</p>
       <p style="color:#374151;line-height:1.7;margin:0 0 24px;">
-        この度はGEO Search Protocol™ for Localの無料AI診断をご利用いただき、ありがとうございます。<br>
+        この度はAgent Readiness Index™ for Localの無料AI診断をご利用いただき、ありがとうございます。<br>
         診断結果のPDFレポート（全7ページ）を添付いたしました。
       </p>
 
@@ -119,7 +120,7 @@ export function buildReportEmailHtml({
 
     <div style="background:#F9FAFB;padding:20px 36px;border-top:1px solid #E5E7EB;">
       <p style="margin:0;font-size:11px;color:#9CA3AF;line-height:1.6;">
-        合同会社コア・リテール　GEO Search Protocol™ for Local<br>
+        合同会社コア・リテール　Agent Readiness Index™ for Local<br>
         <a href="${SITE_URL}" style="color:#00E5A0;text-decoration:none;">${SITE_URL.replace(/^https:\/\//, '')}</a>
       </p>
     </div>
@@ -133,12 +134,12 @@ export function buildReportEmailContent(data: DiagnosisResult, contactName: stri
   const issues = buildEmailIssues(data);
 
   return {
-    subject: `【AI Visibility Report】${data.shopName} — GEO Search Protocol for Local`,
+    subject: `【AI Visibility Report】${data.shopName} — Agent Readiness Index for Local`,
     html: buildReportEmailHtml({
       greeting,
       shopName: data.shopName,
       area: data.area,
-      industry: data.industry,
+      industry: industryLabel(data.industry),
       aiVisibilityScore: data.scores.aiVisibilityScore,
       issues,
     }),

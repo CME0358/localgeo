@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createHash } from 'crypto';
+import { rateLimitOrNull } from '@/lib/rate-limit';
 import { generateFullReportPdf } from '@/lib/pdf/merge-report-pdf';
 import {
   buildSlackReportMessage,
@@ -9,6 +10,7 @@ import {
 } from '@/lib/pdf/lead-notify';
 import { buildReportEmailContent } from '@/lib/pdf/report-email';
 import { triggerStepMailSequence } from '@/lib/pdf/trigger-step-mail';
+import { ResendError, resendErrorToUserMessage, sendResendEmail } from '@/lib/resend/client';
 import type { DiagnosisResult, NotifyChannelResult, ReportLeadPayload } from '@/lib/types/diagnosis';
 
 export const maxDuration = 60;
@@ -46,6 +48,40 @@ interface ValidationError {
   error: string;
 }
 
+function isScoreInt(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 100;
+}
+
+function validateDiagnosisScores(diagnosis: DiagnosisResult): string | null {
+  const scoreKeys: (keyof DiagnosisResult['scores'])[] = [
+    'localGeoScore',
+    'aiVisibilityScore',
+    'faqOptimizationRate',
+    'googleMapOptimizationRate',
+    'aiRecommendationPotential',
+  ];
+  for (const key of scoreKeys) {
+    if (!isScoreInt(diagnosis.scores[key])) {
+      return `スコア ${key} が不正です（0〜100の整数が必要）`;
+    }
+  }
+  const radarKeys: (keyof DiagnosisResult['radar'])[] = [
+    'localGeo',
+    'aiVisibility',
+    'faq',
+    'googleMap',
+    'aiCitation',
+    'reviews',
+    'recommendation',
+  ];
+  for (const key of radarKeys) {
+    if (!isScoreInt(diagnosis.radar[key])) {
+      return `レーダー ${key} が不正です（0〜100の整数が必要）`;
+    }
+  }
+  return null;
+}
+
 function validateRequest(body: Record<string, unknown>): ValidatedReportRequest | ValidationError {
   const email = clamp(body.email, 200);
   if (!EMAIL_RE.test(email)) {
@@ -53,8 +89,12 @@ function validateRequest(body: Record<string, unknown>): ValidatedReportRequest 
   }
 
   const diagnosis = body.diagnosis as DiagnosisResult | undefined;
-  if (!diagnosis?.scores) {
+  if (!diagnosis?.scores || !diagnosis.radar) {
     return { ok: false, error: '診断データが不正です' };
+  }
+  const scoreError = validateDiagnosisScores(diagnosis);
+  if (scoreError) {
+    return { ok: false, error: scoreError };
   }
 
   const shopName = clamp(body.shopName || diagnosis.shopName);
@@ -103,36 +143,31 @@ async function sendReportEmail(
 
   const { subject, html } = buildReportEmailContent(data, contactName);
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from,
-      to: [email],
-      subject,
-      html,
-      tags: [
-        { name: 'service', value: 'localgeo' },
-        ...(sessionId ? [{ name: 'sessionId', value: sessionId }] : []),
-      ],
-      attachments: [
-        {
-          filename: 'AI-Visibility-Report.pdf',
-          content: pdfBuffer.toString('base64'),
-        },
-      ],
-    }),
+  await sendResendEmail({
+    apiKey,
+    from,
+    to: [email],
+    subject,
+    html,
+    tags: [
+      { name: 'service', value: 'localgeo' },
+      ...(sessionId ? [{ name: 'sessionId', value: sessionId }] : []),
+    ],
+    attachments: [
+      {
+        filename: 'AI-Visibility-Report.pdf',
+        content: pdfBuffer.toString('base64'),
+      },
+    ],
   });
 
-  const text = await res.text();
-  if (!res.ok) throw new Error(`Resend HTTP ${res.status}: ${text.slice(0, 200)}`);
   return { ok: true };
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
+  const limited = rateLimitOrNull(request, 'pdf');
+  if (limited) return limited;
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
@@ -186,19 +221,42 @@ export async function POST(request: Request): Promise<NextResponse> {
     ]);
 
     if (emailResult.status === 'rejected') {
+      const reason = emailResult.reason;
+      const isDev = process.env.NODE_ENV !== 'production';
+      const isAuthError = reason instanceof ResendError && reason.isAuthError;
+
       logRequest('[pdf] email_failed', request, {
         sessionId,
         emailHash: hashEmail(email),
-        message:
-          emailResult.reason instanceof Error ? emailResult.reason.message : String(emailResult.reason),
+        message: reason instanceof Error ? reason.message : String(reason),
+        isAuthError,
       });
+
+      if (isDev && isAuthError) {
+        return NextResponse.json({
+          ok: true,
+          emailSent: false,
+          emailSkipped: true,
+          devPdfBase64: pdfBuffer.toString('base64'),
+          devWarning:
+            'RESEND_API_KEY が無効です。PDFをダウンロードしました（メールは未送信）。Vercel の RESEND_API_KEY を .env.local にコピーしてください。',
+          channels: [airtableResult, slackResult].map((result, i) => {
+            const name = i === 0 ? 'airtable' : 'slack';
+            if (result.status === 'fulfilled') return result.value;
+            return { channel: name, ok: false };
+          }),
+        });
+      }
+
       return NextResponse.json(
         {
           ok: false,
-          error: 'レポートのメール送付に失敗しました',
-          detail: String(
-            emailResult.reason instanceof Error ? emailResult.reason.message : emailResult.reason,
-          ),
+          error: resendErrorToUserMessage(reason),
+          detail: reason instanceof Error ? reason.message : String(reason),
+          code:
+            reason instanceof ResendError && reason.isAuthError
+              ? 'RESEND_AUTH_FAILED'
+              : 'RESEND_SEND_FAILED',
         },
         { status: 502 },
       );
