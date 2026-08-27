@@ -76,14 +76,6 @@ export function AiSignalIconGlyph({ name, className }: AiSignalIconProps) {
           <path {...common} d="M8 6.5 5.5 4M16 6.5 18.5 4" />
         </svg>
       );
-    case 'organic':
-      return (
-        <svg viewBox="0 0 24 24" className={className ?? iconClass} aria-hidden>
-          <circle {...common} cx="10.5" cy="10.5" r="5.5" />
-          <path {...common} d="M15 15 20 20" />
-          <path {...common} d="M8.5 10.5h4" />
-        </svg>
-      );
     default:
       return null;
   }

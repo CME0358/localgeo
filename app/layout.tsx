@@ -3,44 +3,45 @@ import './globals.css';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/constants/site';
-import { defaultLanding } from '@/lib/content/default-landing';
-
-const title = defaultLanding.meta.title;
-const description =
-  'オーガニック検索対策だけでは不十分な時代に。ChatGPT・Gemini・AI OverviewでAI推薦されやすい店舗を設計。歯科・クリニック・エステ・整体・美容室対応。SEO・MEO・Googleマップ最適化も込み。月額60,000円〜。';
-
-const ogImage = {
-  url: '/images/geo-before-after.png',
-  width: 800,
-  height: 446,
-  alt: 'GEO対策のBefore/After — AIが店舗を指名推薦する状態へ',
-} as const;
+import { SITE_SEO } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title,
-  description,
+  title: SITE_SEO.title,
+  description: SITE_SEO.description,
+  keywords: [...SITE_SEO.keywords],
   alternates: {
     canonical: '/',
   },
   icons: {
     icon: '/favicon.png',
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   openGraph: {
-    title,
-    description,
+    title: SITE_SEO.title,
+    description: SITE_SEO.description,
     url: '/',
-    siteName: 'Agent Readiness Index for Local',
-    locale: 'ja_JP',
+    siteName: SITE_SEO.brandNameFull,
+    locale: SITE_SEO.locale,
     type: 'website',
-    images: [ogImage],
+    images: [SITE_SEO.ogImage],
   },
   twitter: {
     card: 'summary_large_image',
-    title,
-    description,
-    images: [ogImage.url],
+    title: SITE_SEO.title,
+    description: SITE_SEO.description,
+    images: [SITE_SEO.ogImage.url],
+    site: '@CoaRetail',
   },
+  category: 'business',
+  applicationName: SITE_SEO.brandNameFull,
 };
 
 export default function RootLayout({

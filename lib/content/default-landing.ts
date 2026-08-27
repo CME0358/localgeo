@@ -2,7 +2,7 @@ import type { LandingPageContent } from '@/lib/types/content';
 
 export const defaultLanding: LandingPageContent = {
   meta: {
-    title: 'オーガニック検索・AI検索対策｜AIに推薦される店舗へ — Local GEO™',
+    title: 'Agent Readiness Index™｜SEO・MEO・AI検索対策 — Local GEO™',
   },
   nav: {
     logo: 'Agent Readiness',
@@ -17,19 +17,18 @@ export const defaultLanding: LandingPageContent = {
   },
   hero: {
     eyebrow: 'Agent Readiness Index™ · AI Search Readiness for Local Business',
-    titleLines: ['オーガニック検索対策だけでは、', 'もう', '。', 'これからは', 'される店舗へ。'],
+    titleLines: ['SEO・MEO対策だけでは、', 'もう', '。', 'これからは', 'される店舗へ。'],
     titleAccent: '不十分',
     titleAiText: 'AIに推薦',
     titleAiHighlightLines: ['AIに', '推薦'],
     subtitleLines: [
       'ChatGPT・Gemini・Google AI Overviewが、',
       '店舗やサービスを比較し、推薦する時代。',
-      'Google検索・マップのオーガニック対策だけでなく、',
+      'SEOやGoogleマップの順位だけでなく、',
       'AIに正しく理解・評価される状態が',
       '重要になっています。',
     ],
     platformBadges: [
-      'オーガニック検索 対応',
       'ChatGPT 店舗集客',
       'Gemini 対応',
       'AI Overview 対応',
@@ -111,23 +110,21 @@ export const defaultLanding: LandingPageContent = {
     ],
   },
   comparison: {
-    eyebrow: 'オーガニック検索対策とAI検索対策の違い',
+    eyebrow: 'SEO・MEO対策とAI検索対策の違い',
     titleLines: ['検索で「見つかる」だけでは、', 'AIに「選ばれる」とは限らない。'],
     subtitleLines: [
-      'オーガニック検索対策（SEO・MEO）では、Google検索やGoogleマップで見つけてもらうための最適化が中心です。',
-      '一方、AI検索対策では、「AIが店舗やサービスをどう理解し、比較し、推薦するか」という視点が重要になります。SEO・MEOに加えて、両方を整えることが重要です。',
+      '従来のSEO・MEO対策では、Google検索やGoogleマップで見つけてもらうための最適化が中心でした。',
+      '一方、AI検索では、「AIが店舗やサービスをどう理解し、比較し、推薦するか」という視点が重要になります。',
     ],
     old: {
-      label: '⬛ オーガニック検索対策（SEO・MEO）',
+      label: '⬛ 従来のSEO / MEO',
       title: '検索・マップで見つけてもらう',
       items: [
-        { text: 'Google検索での表示・順位' },
-        { text: 'Googleマップ上での順位（MEO）' },
-        { text: 'Googleビジネスプロフィール（GBP）整備' },
+        { text: 'Google検索での表示' },
+        { text: 'Googleマップ上での順位' },
+        { text: 'Googleビジネスプロフィールの整備' },
         { text: '口コミ・評価の管理' },
-        { text: '公式サイト / ローカルSEOコンテンツ' },
-        { text: '地域キーワード・店舗名検索の最適化' },
-        { text: '構造化データ（Schema markup）' },
+        { text: 'Webコンテンツ / SEO' },
       ],
       footer: '↓ ユーザーが複数を見比べる前提の戦略',
     },
@@ -397,7 +394,7 @@ export const defaultLanding: LandingPageContent = {
     eyebrow: '料金プラン',
     titleLines: ['シンプルな', '月払い・年払い。'],
     subtitleLines: [
-      'オーガニック検索・AI検索対策を含む契約・運用・レポートまで全て込み。',
+      'SEO・MEO・AI検索対策を含む契約・運用・レポートまで全て込み。',
       '余計なオプションや隠れコストは一切ありません。',
     ],
     badge: '✦ Agent Readiness Index™ for Local',
@@ -419,13 +416,11 @@ export const defaultLanding: LandingPageContent = {
     },
     features: [
       'Local GEO™戦略設計',
-      'オーガニック検索対策（SEO・ローカルSEO）',
-      'Googleマップ最適化（MEO）',
+      'Googleマップ最適化（MEO対策）',
       'AI推薦対策（ChatGPT/Gemini）',
       'AI引用・エンティティ強化',
       'FAQ構造化（Schema markup）',
       '口コミ収集・最適化設計',
-      '地域キーワード・コンテンツ設計',
       'Googleマップ広告最適化',
       '月次AI診断レポート',
       'Zoom月次MTG（20分）',
@@ -437,8 +432,8 @@ export const defaultLanding: LandingPageContent = {
     },
     noteLines: [
       '※ まずは無料のAI推薦診断からお気軽にどうぞ。',
-      'オーガニック検索・MEOの費用感も含め、診断後に担当者よりご提案いたします。',
-      '他社SEO・MEO対策からの乗り換えもご相談ください。',
+      'MEO対策の費用感も含め、診断後に担当者よりご提案いたします。',
+      '他社MEO対策からの乗り換えもご相談ください。',
     ],
   },
   finalCta: {

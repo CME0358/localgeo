@@ -1,6 +1,7 @@
 import { defaultLanding } from '@/lib/content/default-landing';
 import { SITE_URL } from '@/lib/constants/site';
 import { buildFaqPageSchema } from '@/lib/faq';
+import { PAGE_DESCRIPTION, SITE_SEO } from '@/lib/seo/metadata';
 
 const ORGANIZATION_ID = 'https://www.coaretail.com/#organization';
 const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -10,15 +11,18 @@ const PRICING_ID = `${SITE_URL}/#pricing`;
 const FRAMEWORK_ID = `${SITE_URL}/#framework`;
 const DIAGNOSIS_APP_ID = `${SITE_URL}/#diagnosis-app`;
 const INDUSTRIES_ID = `${SITE_URL}/#industries`;
-
-const PAGE_DESCRIPTION =
-  'オーガニック検索対策だけでは不十分な時代に。ChatGPT・Gemini・AI OverviewでAI推薦されやすい店舗を設計。歯科・クリニック・エステ・整体・美容室対応。SEO・MEO・Googleマップ最適化も込み。月額60,000円〜。';
+const BRAND_ID = `${SITE_URL}/#brand`;
 
 /** 本社サイトのロゴ（public/logo.png は未配置のため本社URLを使用） */
 const ORGANIZATION_LOGO = 'https://www.coaretail.com/logo.png';
 
 function parseYenAmount(amount: string): string {
   return amount.replace(/,/g, '');
+}
+
+function industryCardDescription(card: (typeof defaultLanding.services.cards)[number]): string {
+  const queries = card.queries?.length ? `例：「${card.queries.join('」「')}」` : '';
+  return [queries, card.description].filter(Boolean).join(' ');
 }
 
 function buildPricingOffersSchema() {
@@ -65,6 +69,18 @@ function buildPricingOffersSchema() {
   ];
 }
 
+export function buildBrandSchema() {
+  return {
+    '@type': 'Brand',
+    '@id': BRAND_ID,
+    name: SITE_SEO.brandName,
+    alternateName: ['ARI', 'Agent Readiness Index for Local'],
+    description:
+      'ChatGPT・Gemini等のAIが店舗・サービスをどの程度発見・理解・推薦できるかを評価する診断フレームワーク。',
+    url: SITE_URL,
+  };
+}
+
 export function buildOrganizationSchema() {
   const { footer } = defaultLanding;
 
@@ -88,13 +104,12 @@ export function buildOrganizationSchema() {
 }
 
 export function buildWebSiteSchema() {
-  const { meta } = defaultLanding;
-
   return {
     '@type': 'WebSite',
     '@id': WEBSITE_ID,
     url: `${SITE_URL}/`,
-    name: meta.title,
+    name: SITE_SEO.brandNameFull,
+    alternateName: [SITE_SEO.title, SITE_SEO.productNameFull],
     description: PAGE_DESCRIPTION,
     publisher: { '@id': ORGANIZATION_ID },
     inLanguage: 'ja',
@@ -102,24 +117,23 @@ export function buildWebSiteSchema() {
       { '@id': WEBPAGE_ID },
       { '@id': `${SITE_URL}/#faq` },
       { '@id': DIAGNOSIS_APP_ID },
+      { '@id': INDUSTRIES_ID },
     ],
   };
 }
 
 export function buildWebPageSchema() {
-  const { meta } = defaultLanding;
-
   return {
     '@type': 'WebPage',
     '@id': WEBPAGE_ID,
     url: `${SITE_URL}/`,
-    name: meta.title,
+    name: SITE_SEO.title,
     description: PAGE_DESCRIPTION,
     isPartOf: { '@id': WEBSITE_ID },
-    about: { '@id': SERVICE_ID },
-    mainEntity: { '@id': SERVICE_ID },
+    about: [{ '@id': FRAMEWORK_ID }, { '@id': SERVICE_ID }],
+    mainEntity: { '@id': DIAGNOSIS_APP_ID },
     publisher: { '@id': ORGANIZATION_ID },
-    dateModified: '2026-06-12',
+    dateModified: SITE_SEO.dateModified,
     inLanguage: 'ja',
     isAccessibleForFree: true,
   };
@@ -129,21 +143,35 @@ export function buildEvaluationFrameworkSchema() {
   return {
     '@type': 'DefinedTermSet',
     '@id': FRAMEWORK_ID,
-    name: 'Local GEO Evaluation Framework',
+    name: 'Agent Readiness Index Evaluation Framework',
+    alternateName: ['Agent Readiness Index', 'ARI', 'Local GEO Evaluation Framework'],
     description:
-      '地域店舗のAI検索露出を測る評価フレームワーク。Local GEO Score・AI Visibility Score・FAQ/Googleマップ最適化・AI推薦可能性を軸に診断する。',
+      '地域店舗のAI検索 readiness を測る評価フレームワーク。ARI Score・AI Visibility・Local GEO Score・SEO/MEO・AI推薦可能性を軸に診断する。',
     hasDefinedTerm: [
       {
         '@type': 'DefinedTerm',
-        name: 'Local GEO Score',
+        name: 'Agent Readiness Index',
+        alternateName: 'ARI',
         description:
-          'ChatGPT・Gemini・AI Overviewを含むAI検索全体での店舗露出・推薦適性を0〜100で評価する総合スコア。',
+          'ChatGPT・Gemini等のAIが、店舗・サービスをどの程度発見し、理解し、条件に応じて推薦できる状態にあるかを確認する評価の考え方。',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'ARI Score',
+        description:
+          'Agent Readiness Indexに基づく、AI検索上の readiness を0〜100で表す総合スコア。',
       },
       {
         '@type': 'DefinedTerm',
         name: 'AI Visibility Score',
         description:
           'AI検索エンジン上での表示・引用・推薦の可視性を0〜100で評価するスコア。',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'Local GEO Score',
+        description:
+          'ChatGPT・Gemini・AI Overviewを含むAI検索全体での店舗露出・推薦適性を0〜100で評価する総合スコア。',
       },
       {
         '@type': 'DefinedTerm',
@@ -167,7 +195,13 @@ export function buildEvaluationFrameworkSchema() {
         '@type': 'DefinedTerm',
         name: 'Local GEO',
         description:
-          'MEO（Googleマップ順位対策）を超え、AIが店舗を理解・引用・推薦しやすい状態を設計するGEO対策（AI検索最適化）。Agent Readiness Index™ for Localの中核コンセプト。',
+          'Agent Readiness Indexで把握した課題をもとに、店舗情報・Web・FAQ・GBP等を整え、AIに正しく理解・推薦されやすい状態を目指す改善サービス（月額60,000円〜）。',
+      },
+      {
+        '@type': 'DefinedTerm',
+        name: 'AI検索対策',
+        description:
+          'ChatGPT・Gemini・Google AI Overview等において、AIが店舗情報を正しく理解し、比較・推薦できる状態を整える取り組み。',
       },
     ],
   };
@@ -180,6 +214,7 @@ export function buildDiagnosisApplicationSchema() {
     '@type': 'SoftwareApplication',
     '@id': DIAGNOSIS_APP_ID,
     name: diagnosis.form.title,
+    alternateName: ['Agent Readiness Index 無料診断', '無料AI推薦診断', 'Quick診断'],
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: `${SITE_URL}/#diagnosis`,
@@ -202,13 +237,13 @@ export function buildIndustriesSchema() {
   return {
     '@type': 'ItemList',
     '@id': INDUSTRIES_ID,
-    name: '対応業種',
+    name: '対応業種 — AI検索対策',
     numberOfItems: services.cards.length,
     itemListElement: services.cards.map((card, index) => ({
       '@type': 'ListItem',
       position: index + 1,
       name: card.name,
-      description: card.description,
+      description: industryCardDescription(card),
     })),
   };
 }
@@ -219,7 +254,7 @@ export function buildPricingCatalogSchema() {
   return {
     '@type': 'OfferCatalog',
     '@id': PRICING_ID,
-    name: defaultLanding.pricing.serviceName,
+    name: `${SITE_SEO.productName} — ${defaultLanding.pricing.serviceName}`,
     itemListElement: offers.map((offer, index) => ({
       '@type': 'ListItem',
       position: index + 1,
@@ -229,31 +264,42 @@ export function buildPricingCatalogSchema() {
 }
 
 export function buildServiceSchema() {
-  const { pricing, meta } = defaultLanding;
+  const { pricing } = defaultLanding;
   const offers = buildPricingOffersSchema();
 
   return {
     '@type': 'Service',
     '@id': SERVICE_ID,
-    name: pricing.serviceName,
-    alternateName: ['Local GEO', 'Agent Readiness Index for Local', 'GEO対策', 'AI検索対策', meta.title],
+    name: SITE_SEO.productName,
+    alternateName: [
+      'Local GEO Full Protocol Plan',
+      SITE_SEO.productNameFull,
+      pricing.serviceName,
+      'Agent Readiness Index for Local',
+      'AI検索対策',
+      'SEO MEO AI検索最適化',
+    ],
+    brand: { '@id': BRAND_ID },
     serviceType: 'AI Local Search Optimization',
     url: SITE_URL,
     provider: { '@id': ORGANIZATION_ID },
     description:
-      'オーガニック検索・AI検索対策を統合した、AI検索時代の地域店舗向けAI推薦最適化サービス',
+      'Agent Readiness Indexで現状を診断し、Local GEOで改善。SEO・MEO・AI検索対策を統合した地域店舗向けAI推薦最適化サービス（月額60,000円〜）。',
     areaServed: {
       '@type': 'Country',
       name: 'Japan',
     },
     audience: {
       '@type': 'BusinessAudience',
-      audienceType: '地域店舗・サロン・飲食店・クリニック',
+      audienceType:
+        '歯科医院・クリニック・美容クリニック・エステ・美容室・整体・ジム・飲食店・不動産など地域店舗',
     },
     hasOfferCatalog: { '@id': PRICING_ID },
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'JPY',
+      lowPrice: parseYenAmount(pricing.paymentOptions.monthly.amount),
+      highPrice: parseYenAmount(pricing.paymentOptions.annual.amount),
       offerCount: String(offers.length),
       offers,
     },
@@ -272,6 +318,7 @@ export function buildStructuredData() {
     '@context': 'https://schema.org',
     '@graph': [
       buildOrganizationSchema(),
+      buildBrandSchema(),
       buildWebSiteSchema(),
       buildWebPageSchema(),
       buildEvaluationFrameworkSchema(),

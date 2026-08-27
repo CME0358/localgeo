@@ -4,8 +4,7 @@ export type AiSignalIcon =
   | 'reviews'
   | 'mention'
   | 'entity'
-  | 'local'
-  | 'organic';
+  | 'local';
 
 export interface AiSignal {
   title: string;
@@ -14,11 +13,6 @@ export interface AiSignal {
 }
 
 export const AI_SIGNALS: AiSignal[] = [
-  {
-    icon: 'organic',
-    title: 'オーガニック検索',
-    description: 'Google検索・地域キーワード・公式サイトでの表示と評価。',
-  },
   {
     icon: 'google-map',
     title: 'Googleマップ情報',
@@ -52,29 +46,27 @@ export const AI_SIGNALS: AiSignal[] = [
 ];
 
 export const COMPARISON_SECTION = {
-  eyebrow: 'オーガニック検索対策とAI検索対策の違い',
+  eyebrow: 'SEO・MEO対策とAI検索対策の違い',
   titleLines: ['検索で「見つかる」だけでは、', 'AIに「選ばれる」とは限らない。'],
   meoIntro:
-    'オーガニック検索対策（SEO・MEO）では、Google検索やGoogleマップで見つけてもらうための最適化が中心です。',
+    '従来のSEO・MEO対策では、Google検索やGoogleマップで見つけてもらうための最適化が中心でした。',
   meoFocusItems: [] as string[],
   meoFocusSuffix: '',
-  aiIntro: '一方、AI検索対策では、',
+  aiIntro: '一方、AI検索では、',
   aiFocus: '「AIが店舗やサービスをどう理解し、比較し、推薦するか」',
-  aiFocusSuffix: 'という視点が重要になります。SEO・MEOに加えて、両方を整えることが重要です。',
+  aiFocusSuffix: 'という視点が重要になります。',
   aiSignalsTitleLines: ['AIは、', 'こんな情報を見ています。'],
   aiSignalsFooterLines: ['AIが、', '“おすすめ店舗”', 'を選び始めています。'],
   flowSteps: ['検索', 'AIが店舗を理解', 'AIが推薦', '来店'],
   old: {
-    label: '⬛ オーガニック検索対策（SEO・MEO）',
+    label: '⬛ 従来のSEO / MEO',
     title: '検索・マップで見つけてもらう',
     items: [
-      'Google検索での表示・順位',
-      'Googleマップ上での順位（MEO）',
-      'Googleビジネスプロフィール（GBP）整備',
+      'Google検索での表示',
+      'Googleマップ上での順位',
+      'Googleビジネスプロフィールの整備',
       '口コミ・評価の管理',
-      '公式サイト / ローカルSEOコンテンツ',
-      '地域キーワード・店舗名検索の最適化',
-      '構造化データ（Schema markup）',
+      'Webコンテンツ / SEO',
     ],
     footer: '↓ ユーザーが複数を見比べる前提の戦略',
   },
