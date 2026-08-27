@@ -68,7 +68,7 @@ export function buildReportEmailHtml({
   <div style="max-width:600px;margin:32px auto;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
 
     <div style="background:#0D1220;padding:28px 36px;">
-      <p style="margin:0 0 4px;font-size:11px;color:#00E5A0;letter-spacing:2px;font-weight:700;">GEO SEARCH PROTOCOL FOR LOCAL</p>
+      <p style="margin:0 0 4px;font-size:11px;color:#00E5A0;letter-spacing:2px;font-weight:700;">AGENT READINESS INDEX · LOCAL GEO</p>
       <h1 style="margin:0;font-size:20px;color:#ffffff;font-weight:700;">AI Visibility Report</h1>
       <p style="margin:8px 0 0;font-size:13px;color:#6B7280;">${area} · ${industry} | ${shopName}</p>
     </div>

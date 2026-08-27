@@ -92,7 +92,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'Local GEOの料金はいくらですか？',
     lead:
-      'Full Protocol Plan（SEO・MEO・AI検索対策を含む契約・運用・レポート込み）の料金は以下の通りです。',
+      'Local GEO™ AI検索改善プラン（SEO・MEO・AI検索対策を含む契約・運用・レポート込み）の料金は以下の通りです。',
     bullets: [
       '月払い：60,000円/月（税別）· 12ヶ月契約',
       '年払い：600,000円/年（税別）· 一括請求（約17%OFF）',
@@ -131,7 +131,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     bullets: [
       '改善レポートの確認',
       'Zoomでの情報交換（希望者）',
-      'Full Protocol Planのご契約',
+      'Local GEO™ AI検索改善プランのご契約',
     ],
     closing: 'という流れで開始します。診断は無料で、契約の義務はありません。',
   },

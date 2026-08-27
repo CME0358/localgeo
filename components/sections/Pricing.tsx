@@ -39,7 +39,7 @@ export function Pricing() {
 
         <div className="flex flex-col items-center text-center">
           <div className="inline-flex rounded-full border border-[#3b72ff]/30 bg-[#3b72ff]/10 px-4 py-1.5 text-xs font-semibold text-[#3b72ff] md:text-sm">
-            ✦ Agent Readiness Index<Tm /> for Local
+            ✦ Local GEO<Tm />
           </div>
 
           <h3 className="mt-6 text-2xl font-bold text-white md:text-3xl">

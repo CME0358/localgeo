@@ -397,8 +397,8 @@ export const defaultLanding: LandingPageContent = {
       'SEO・MEO・AI検索対策を含む契約・運用・レポートまで全て込み。',
       '余計なオプションや隠れコストは一切ありません。',
     ],
-    badge: '✦ Agent Readiness Index™ for Local',
-    serviceName: 'Full Protocol Plan',
+    badge: '✦ Local GEO™',
+    serviceName: 'AI検索改善プラン',
     currency: '¥',
     paymentOptions: {
       monthly: {

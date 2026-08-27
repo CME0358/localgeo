@@ -272,7 +272,7 @@ export function buildServiceSchema() {
     '@id': SERVICE_ID,
     name: SITE_SEO.productName,
     alternateName: [
-      'Local GEO Full Protocol Plan',
+      'Local GEO AI検索改善プラン',
       SITE_SEO.productNameFull,
       pricing.serviceName,
       'Agent Readiness Index for Local',

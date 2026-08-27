@@ -142,7 +142,7 @@ export function buildReportAnalysis(data: DiagnosisResult): ReportAnalysis {
         recommendation < 60 ? 'AI推薦向けコンテンツ（比較・選び方・地域特化情報）の追加' : null,
       ].filter((item): item is string => item !== null),
       localGeoProposal:
-        'Agent Readiness Index™ for Local では、AI露出診断→情報設計→優先3項目の実装を伴走型で支援します。まずはGBP・FAQ・構造化データの3点セットから着手することを推奨します。',
+        'Local GEO™では、AI露出診断→情報設計→優先3項目の実装を伴走型で支援します。まずはGBP・FAQ・構造化データの3点セットから着手することを推奨します。',
     },
   };
 }
