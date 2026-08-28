@@ -42,6 +42,9 @@ export const metadata: Metadata = {
   },
   category: 'business',
   applicationName: SITE_SEO.brandNameFull,
+  other: {
+    'msvalidate.01': '9D6B56994674DB2892A8B22A778997F0',
+  },
 };
 
 export default function RootLayout({
