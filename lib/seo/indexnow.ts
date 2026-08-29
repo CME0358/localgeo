@@ -6,12 +6,9 @@ const KEY_PATTERN = /^[a-zA-Z0-9-]{8,128}$/;
 
 export const INDEXNOW_SITE_URLS = [`${SITE_URL}/`] as const;
 
-function validateKey(key: string | undefined) {
-  if (!key) return { ok: false as const, error: 'INDEXNOW_KEY is empty' };
-  if (!KEY_PATTERN.test(key)) {
-    return { ok: false as const, error: 'INDEXNOW_KEY format invalid' };
-  }
-  return { ok: true as const };
+function validateKey(key: string | undefined): key is string {
+  if (!key) return false;
+  return KEY_PATTERN.test(key);
 }
 
 export async function verifyIndexNowKeyFile(key: string) {
@@ -31,11 +28,10 @@ export async function verifyIndexNowKeyFile(key: string) {
 
 export async function submitIndexNowFromServer() {
   const key = process.env.INDEXNOW_KEY;
-  const keyCheck = validateKey(key);
-  if (!keyCheck.ok) {
+  if (!validateKey(key)) {
     return {
       status: 'skipped' as const,
-      reason: keyCheck.error,
+      reason: !key ? 'INDEXNOW_KEY is empty' : 'INDEXNOW_KEY format invalid',
       submitted: 0,
       httpStatus: null,
     };
