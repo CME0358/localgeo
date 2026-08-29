@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-indexnow-key-file.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:resend": "node scripts/check-resend.mjs"
+    "check:resend": "node scripts/check-resend.mjs",
+    "indexnow": "node scripts/submit-indexnow.mjs --full-site",
+    "indexnow:dry": "node scripts/submit-indexnow.mjs --full-site --dry-run",
+    "indexnow:post-deploy": "node scripts/submit-indexnow-post-deploy.mjs"
   },
   "dependencies": {
     "@fontsource/noto-sans-jp": "^5.2.9",

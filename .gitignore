@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# IndexNow verification (generated at build from INDEXNOW_KEY)
+public/*.txt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
